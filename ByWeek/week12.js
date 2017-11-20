@@ -107,7 +107,7 @@ function PriQNode(value, priority){
 function PriQueue(){
 	this.head = null;
 	this.enqueue = function(value, priority){
-		var temp = new PriQNode(value, priority)
+		var temp = new PriQNode(value, priority);
 		if(!this.head || this.head.pri<priority){
 			temp.next = this.head;
 			this.head = temp;
@@ -140,7 +140,7 @@ function PriQueue(){
 		return false;
 	}
 }
-function QueueUsingTwoStacks(){
+function QueueFromTwoStacks(){
     var stack1 = new Stack();
     var stack2 = new Stack();
     this.enqueue = function(val){
@@ -155,14 +155,14 @@ function QueueUsingTwoStacks(){
         return stack2.pop();
     }
 }
-function PriorityQueueUsingTwoStacks(){
-    var stack1 = new PriorityStack();
-    var stack2 = new PriorityStack();
+function PriorityQueueFromTwoStacks(){
+    var stack1 = new Stack();
+    var stack2 = new Stack();
     this.enqueue = function(val, pri){
-        while(stack1.top().pri<pri){
+        while(stack1.top()[1] < pri){
 			stack2.push(stack1.pop());
 		}
-		stack1.push(val, pri);
+		stack1.push([val, pri]);
 		while(!stack2.isEmpty()){
 			stack1.push(stack2.pop());
 		}
@@ -171,9 +171,10 @@ function PriorityQueueUsingTwoStacks(){
 		while(!stack1.isEmpty()){
 			stack2.push(stack1.pop());
 		}
-		return stack2.pop();
+		var temp = stack2.pop();
 		while(!stack2.isEmpty()){
 			stack1.push(stack2.pop());
 		}
+		return temp;
     }
 }
