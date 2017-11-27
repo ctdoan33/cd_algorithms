@@ -34,7 +34,7 @@ function acronyms(str){
 function reverseString(str){
     var newstr="";
     for(var i=str.length-1; i>=0; i--){
-        newstr+=str[i];
+        newstr += str[i];
     }
     return newstr;
 }
@@ -46,7 +46,7 @@ function removeEvenLengthStrings(arr){
             index++;
         }
     }
-    arr.length = index
+    arr.length = index;
     return arr;
 }
 function parensValid(str){
@@ -54,7 +54,7 @@ function parensValid(str){
     for(var i=0; i<str.length; i++){
         if(str[i] == "("){
             count++;
-        } else if(str[i] == ")"){
+        }else if(str[i] == ")"){
             count--;
         }
         if(count < 0){
@@ -63,20 +63,20 @@ function parensValid(str){
     }
     if(count == 0){
         return true;
-    } else {
-        return false
+    }else{
+        return false;
     }
 }
 function bracesValid(str){
     var stack = [];
     for(var i=0; i<str.length; i++){
-        if(str[i]=="(" || str[i]=="{" || str[i]=="["){
+        if(str[i] == "(" || str[i] == "{" || str[i] == "["){
             stack.push(str[i]);
-        }else if(str[i]==")" && stack.pop()!="("){
+        }else if(str[i] == ")" && stack.pop() != "("){
                 return false;
-        }else if(str[i]=="}" && stack.pop()!="{"){
+        }else if(str[i] == "}" && stack.pop() != "{"){
                 return false;
-        }else if(str[i]=="]" && stack.pop()!="["){
+        }else if(str[i] == "]" && stack.pop() != "["){
                 return false;
         }
     }
@@ -91,19 +91,15 @@ function isPalindrome(str){
     return true;
 }
 function isPalindromeSpaces(str){
-    var i = 0;
-    var j = str.length-1;
-    while(i<j){
-        if(str[i]==" "){
+    for(var i=0, j=str.length-1; i<j; i++, j--){
+        while(str[i] == " "){
             i++;
-        }else if(str[j]==" "){
+		}
+		while(str[j] == " "){
             j--;
         }
-        if(str[i]!=str[j]){
+        if(str[i] != str[j]){
             return false;
-        }else{
-            i++;
-            j--;
         }
     }
     return true;

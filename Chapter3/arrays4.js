@@ -1,21 +1,18 @@
 function shuffle(arr){
     var temp;
-    var randind;
     for(var i=0; i<arr.length; i++){
-        randind=Math.floor(Math.random()*arr.length);
-        temp=arr[randind];
-        arr[randind]=arr[i];
+        var randidx=Math.floor(Math.random()*arr.length);
+        temp=arr[randidx];
+        arr[randidx]=arr[i];
         arr[i]=temp;
     }
     return arr;
 }
 function removeRange(arr, start, end){
-    for(var i=start; i<=end; i++){
+    for(var i=start; i+end-start+1<arr.length; i++){
         arr[i]=arr[i+end-start+1];
     }
-    for(var j=0; j<end-start+1; j++){
-        arr.pop();
-    }
+    arr.length=i;
     return arr;
 }
 function intermediateSums(arr){

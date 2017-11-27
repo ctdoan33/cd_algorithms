@@ -46,9 +46,8 @@ function rollOne(){
     return Math.trunc(Math.random()*6)+1;
 }
 function playFives(num){
-    var roll;
     for(var i=1; i<=num; i++){
-        roll=rollOne();
+        var roll=rollOne();
         console.log(roll);
         if(roll==5){
             console.log("That's good luck!");
@@ -58,9 +57,8 @@ function playFives(num){
 function playStatistics(){
     var low=6;
     var high=1;
-    var roll;
     for(var i=1; i<=8; i++){
-        roll=rollOne();
+        var roll=rollOne();
         if(roll<low){
             low=roll;
         }
@@ -74,9 +72,8 @@ function playStatistics2(){
     var low=6;
     var high=1;
     var sum=0;
-    var roll;
     for(var i=1; i<=8; i++){
-        roll=rollOne();
+        var roll=rollOne();
         if(roll<low){
             low=roll;
         }
@@ -91,9 +88,8 @@ function playStatistics3(num){
     var low=6;
     var high=1;
     var sum=0;
-    var roll;
     for(var i=1; i<=num; i++){
-        roll=rollOne();
+        var roll=rollOne();
         if(roll<low){
             low=roll;
         }
@@ -108,9 +104,8 @@ function playStatistics4(num){
     var low=6;
     var high=1;
     var sum=0;
-    var roll;
     for(var i=1; i<=num; i++){
-        roll=rollOne();
+        var roll=rollOne();
         if(roll<low){
             low=roll;
         }
@@ -130,10 +125,10 @@ function statisticsUntilDoubles(){
     var min=20;
     var max=1;
     var sum=0;
-    var roll;
-    var last1=0;
-    var last2=21;
-    while(last1!=last2){
+	var last=-1;
+	var roll;
+    while(roll!=last){
+		last=roll;
         roll=roll20SidedDie();
         rolls++;
         if(roll<min){
@@ -143,8 +138,6 @@ function statisticsUntilDoubles(){
             max=roll;
         }
         sum+=roll;
-        last2=last1;
-        last1=roll;
     }
     console.log(rolls, min, max, sum/rolls);
 }

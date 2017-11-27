@@ -52,14 +52,12 @@ function concat(){
     }
     return str;
 }
-function slice(str, start, end){
+function slice(str, start, end=str.length){
     var newstr="";
     if(start<0){
         start=str.length+start;
-    }
-    if(end===undefined){
-        end=str.length;
-    }else if(end<0){
+	}
+	if(end<0){
         end=str.length+end;
     }
     for(var i=start; i<end; i++){
@@ -82,43 +80,39 @@ function trim(str){
     }
     return newstr;
 }
-function split(str, separator, limit){
+String.prototype.split=function(separator, limit=Infinity){
     var arr=[];
     var element="";
-    if(limit===undefined){
-        limit=Infinity;
-    }
     if(separator===""){
-        for(var i=0; i<str.length; i++){
+        for(var i=0; i<this.length; i++){
             if(arr.length>=limit){
                 return arr;
             }else{
-            arr.push(str[i]);
+            	arr.push(this[i]);
             }
         }
         return arr;
     }else{
-        for(var j=0; j<str.length; j++){
-            if(str[j]===separator){
+        for(var j=0; j<this.length; j++){
+			if(arr.length>=limit){
+				return arr;
+			}
+            if(this[j]===separator){
                 arr.push(element);
                 element="";
-                if(arr.length>=limit){
-                    return arr;
-                }
             }else{
-                element+=str[j];
+                element+=this[j];
             }
         }
         arr.push(element);
         return arr;
     }
 }
-function search(str, val){
-    var match;
-    for(var i=0; i<str.length; i++){
-        match=true;
+String.prototype.search=function(val){
+    for(var i=0; i<this.length; i++){
+        var match=true;
         for(var j=0; j<val.length; j++){
-            if(str[i+j]!=val[j]){
+            if(this[i+j]!=val[j]){
                 match=false;
                 break;
             }

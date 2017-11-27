@@ -1,117 +1,229 @@
-function DLNode(value){
-    this.val = value;
-    this.prev = null;
-    this.next = null;
+function prependValue(dList, nVal, eVal){
+    var runner=dList.head;
+    if(runner.val===eVal){
+        runner.prev=new DLNode(nVal);
+        runner.prev.next=runner;
+		dList.head=runner.prev;
+		runner=runner.next;
+    }
+    while(runner){
+        if(runner.val===eVal){
+            runner.prev.next=new DLNode(nVal);
+            runner.prev.next.prev=runner.prev;
+            runner.prev=runner.prev.next;
+            runner.prev.next=runner;
+        }
+        runner=runner.next;
+    }
 }
-function DList(){
-    this.head = null;
-    this.tail = null;
-    this.push = function(value){
-        if(!this.tail){
-            this.tail = new DLNode(value);
-            this.head = this.tail;
-        }else{
-            this.tail.next = new DLNode(value);
-            this.tail.next.prev = this.tail;
-            this.tail = this.tail.next;
-        }
+function appendValue(sList, nval, eVal){
+	var runner=sList.tail;
+	if(runner.val===eVal){
+        runner.next=new DLNode(nVal);
+        runner.next.prev=runner;
+		dList.tail=runner.next;
+		runner=runner.prev;
     }
-    this.pop = function(){
-        var temp = this.tail;
-        if(!temp){
-            return;
+    while(runner){
+        if(runner.val===eVal){
+            runner.next.prev=new DLNode(nVal);
+            runner.next.prev.next=runner.next;
+            runner.next=runner.next.prev;
+            runner.next.prev=runner;
         }
-        if(this.head == temp){
-            this.head = null;
-            this.tail = null;
-        }else{
-            this.tail = temp.prev;
-            this.tail.next = null;
-            temp.prev = null;
-        }
-        return temp.val;
+        runner=runner.prev;
     }
-    this.front = function(){
-        if(this.head){
-            return this.head.val;
+
+}
+function kthToLastValue(dList, k){
+    var count=0;
+    var runner=dList.tail;
+    while(runner){
+        if(k==1){
+            return runner.val;
         }
-    }
-    this.back = function(){
-        if(this.tail){
-            return this.tail.val;
-        }
-    }
-    this.contains = function(value){
-        var runner = this.head;
-        while(runner){
-            if(runner.val === value){
-                return true;
-            }
-            runner = runner.next;
-        }
+        runner=runner.prev;
+        k--;
+	}
+	return;
+}
+function deleteMiddleNode(node){
+    node.prev.next=node.next;
+    node.next.prev=node.prev;
+}
+function isValid(dList){
+    var runner=dList.head;
+    if(runner&&runner.prev){
         return false;
     }
-    this.size = function(){
-        var count = 0;
-        var runner = this.head;
-        while(runner){
-            count++;
-            runner = runner.next;
+    while(runner.next){
+        if(runner.next.prev!=runner){
+            return false;
+            runner=runner.next;
         }
-        return count;
+    }
+    if(runner!=dList.tail){
+        return false;
+    }
+    return true;
+}
+function partition(dList, val){
+	if(!dList.head){ // no nodes
+		return;
+	}
+	var runner=dList.head;
+	var last=dlist.tail; // mark last node to partition
+    while(runner.val<val&&runner!=last){
+        runner=runner.next;
+	}
+	if(runner==last){ // only last node greater than or equal to val
+		return;
+	}
+    while(runner!=last){ // partition all except for last node
+        if(runner.val<val){
+            var temp=runner.next;
+            runner.prev.next=temp;
+            temp.prev=runner.prev;
+            runner.next=dList.head;
+			dList.head.prev=runner;
+            runner.prev=null;
+            dList.head=runner;
+            runner=temp;
+        }else if(runner.val>val){
+			var temp=runner.next;
+            runner.prev.next=temp;
+			temp.prev=runner.prev;
+			dList.tail.next=runner;
+			runner.prev=dList.tail;
+			runner.next=null;
+			dList.tail=runner;
+			runner=temp;
+		}else{
+            runner=runner.next;
+        }
+    }
+    if(last.val<val){ // partition last node
+        if(last==dList.tail){
+			dList.tail=last.prev;
+			dList.tail.next=null;
+		}else{
+            last.prev.next=last.next;
+            last.next.prev=last.prev;
+		}
+		last.next=dList.head;
+		dList.head.prev=last;
+		last.prev=null;
+		dList.head=last;
     }
 }
-function push(DList, value){
-    if(!DList.tail){
-        DList.tail = new DLNode(value);
-        DList.head = DList.tail;
-    }else{
-        DList.tail.next = new DLNode(value);
-        DList.tail.next.prev = DList.tail;
-        DList.tail = DList.tail.next;
+function palindrome(dList){
+    var runner1=dList.head;
+    var runner2=dList.tail;
+    while(runner1!=runner2&&runner1!=runner2.next){
+        if(runner1.val!==runner2.val){
+            return false;
+        }
+        runner1=runner1.next;
+        runner2=runner2.prev;
     }
+    return true;
 }
-function pop(DList){
-    var temp = DList.tail;
-    if(!temp){
+function reverse(dList){
+    var runner=dList.head;
+    var temp;
+    while(runner){
+        temp=runner.prev;
+        runner.prev=runner.next;
+        runner.next=temp;
+        runner=runner.next;
+    }
+    if(temp){
+		dList.head=temp.prev;
+	}
+}
+function loopStart(dList){
+    var slow=dList.head;
+    var fast=dList.head;
+    while(fast&&fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow==fast){
+            break;
+        }
+    }
+    if(!fast||!fast.next){
+        return null;
+    }
+    slow=dList.head;
+    while(slow!=fast){
+        slow=slow.next;
+        fast=fast.next;
+    }
+    return slow;
+}
+function breakLoop(sList){
+    var slow=sList.head;
+    var fast=sList.head;
+    while(fast&&fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow==fast){
+            break;
+        }
+    }
+    if(!fast||!fast.next){
         return;
     }
-    if(DList.head == temp){
-        DList.head = null;
-        DList.tail = null;
-    }else{
-        DList.tail = temp.prev;
-        DList.tail.next = null;
-        temp.prev = null;
-    }
-    return temp.val;
-}
-function front(DList){
-    if(DList.head){
-        return DList.head.val;
-    }
-}
-function back(DList){
-    if(DList.tail){
-        return DList.tail.val;
-    }
-}
-function contains(DList, value){
-    var runner = DList.head;
-    while(runner){
-        if(runner.val === value){
-            return true;
+    slow=sList.head;
+    if(slow==fast){
+        while(fast.next!=slow){
+            fast=fast.next;
         }
-        runner = runner.next;
+        fast.next=null;
+        return;
     }
-    return false;
+    while(slow.next!=fast.next){
+        slow=slow.next;
+        fast=fast.next;
+    }
+    fast.next=null;
 }
-function size(DList){
-    var count = 0;
-    var runner = DList.head;
-    while(runner){
-        count++;
-        runner = runner.next;
+function repair(dList){
+    var slow=dList.head;
+    var fast=dList.head;
+    while(fast&&fast.next){ // find loop
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow==fast){
+            break;
+        }
     }
-    return count;
+    if(fast&&fast.next){ // break loop
+        slow=dList.head;
+        if(slow==fast){
+            while(fast.next!=slow){
+                fast=fast.next;
+            }
+            fast.next=null;
+        }else{
+            while(slow.next!=fast.next){
+                slow=slow.next;
+                fast=fast.next;
+            }
+            fast.next=null;
+        }
+    }
+    var runner=dList.head; // repair all pointers
+    if(!runner){
+        dList.tail=null;
+        return;
+    }
+    if(runner.prev){
+        runner.prev=null;
+    }
+    while(runner.next){
+        runner.next.prev=runner;
+        runner=runner.next;
+    }
+    dList.tail=runner;
 }

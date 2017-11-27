@@ -7,7 +7,7 @@ function biggieSize(arr){
     return arr;
 }
 function previousLengths(arr){
-    for(var i=1; i<arr.length; i++){
+    for(var i=arr.length-1; i>0; i--){
         arr[i]=arr[i-1].length;
     }
     return arr;
@@ -35,12 +35,11 @@ function addSevenToMost(arr){
 }
 function printOneReturnAnother(arr){
     console.log(arr[arr.length-2]);
-    var j;
     for(var i=0; i<arr.length; i++){
         if(arr[i]<0){
-            j=-arr[i];
+            var j=-arr[i];
         }else{
-            j=arr[i];
+            var j=arr[i];
         }
         while(j>=2){
             j-=2;
@@ -51,11 +50,10 @@ function printOneReturnAnother(arr){
     }
 }
 function reverse(arr){
-    var temp;
-    for(var i=0; i<arr.length/2; i++){
-        temp=arr[i];
-        arr[i]=arr[arr.length-1-i];
-        arr[arr.length-1-i]=temp;
+    for(var i=0, j=arr.length-1; i<j; i++, j--){
+        var temp=arr[i];
+        arr[i]=arr[j];
+        arr[j]=temp;
     }
     return arr;
 }
@@ -95,7 +93,7 @@ function alwaysHungry(arr){
             console.log("yummy");
         }
     }
-    if(fed==false){
+    if(!fed){
         console.log("I'm hungry");
     }
 }
@@ -122,11 +120,10 @@ function evensAndOdds(arr){
     }
 }
 function swapTowardsTheCenter(arr){
-    var temp;
-    for(var i=0; i<arr.length/2; i+=2){
-        temp=arr[i];
-        arr[i]=arr[arr.length-1-i];
-        arr[arr.length-1-i]=temp;
+    for(var i=0, j=arr.length-1; i<j; i+=2, j-=2){
+        var temp=arr[i];
+        arr[i]=arr[j];
+        arr[j]=temp;
     }
     return arr;
 }

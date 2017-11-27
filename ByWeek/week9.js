@@ -28,31 +28,31 @@ function longestWord(str){
 	return word;
 }
 function rotate(str, num){
-	num=num%str.length;
-	newstr="";
+	num = num%str.length;
+	newst = "";
 	for(var i=0; i<str.length; i++){
-		var idx=num+i;
-		if(idx>=str.length){
-			idx-=length;
+		var idx = num+i;
+		if(idx >= str.length){
+			idx -= length;
 		}
-		newstr+=str[idx];
+		newstr += str[idx];
 	}
 	return newstr;
 }
 function isRotation(str1, str2){
-	if(str1.length!=str2.length){
+	if(str1.length != str2.length){
 		return false;
 	}
-	var length=str1.length;
+	var length = str1.length;
 	for(var i=0; i<length; i++){
-		var rotation=true;
+		var rotation = true;
 		for(var j=0; j<length; j++){
-			var idx=i+j;
-			if(idx>=length){
-				idx-=length;
+			var idx = i+j;
+			if(idx >= length){
+				idx -= length;
 			}
-			if(str1[j]!=str2[idx]){
-				rotation=false;
+			if(str1[j] != str2[idx]){
+				rotation = false;
 				break;
 			}
 		}
@@ -80,14 +80,13 @@ function optimalSequence(arr, sequence=[]){
 				}
 			}else{
 				if(sequence.length && arr[i][j] < sequence[sequence.length-1][j]){
-					ordered = false;
-					break;
+					return null;
 				}else{
 					str += arr[i][j];
 				}
 			}
 		}
-		if(ordered && (!opstr || str < opstr)){
+		if(!opstr || str < opstr){
 			var test = sequence.slice();
 			test.push(str);
 			var result = optimalSequence(arr.slice(0,i).concat(arr.slice(i+1)), test);

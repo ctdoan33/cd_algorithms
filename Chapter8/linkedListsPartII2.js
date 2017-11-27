@@ -1,160 +1,331 @@
-function sumNumerals1(SList1, SList2){
-    var sum=new SList;
-    var carry=0;
-    var runner1=SList1.head;
-    var runner2=SList2.head;
-    while(runner1&&runner2){
-        var digit=runner1.val+runner2.val+carry;
-        carry=(digit-digit%10)/10;
-        digit=digit%10;
-        SList.addBack(digit);
-        runner1=runner1.next;
-        runner2=runner2.next;
+function hasLoop(list){
+    var slow=list.head;
+    var fast=list.head;
+    while(fast&&fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow==fast){
+            return true;
+        }
     }
-    while(runner1){
-        digit=runner1.val+carry;
-        carry=(digit-digit%10)/10;
-        digit=digit%10;
-        SList.addBack(digit);
-        runner1=runner1.next;
-    }
-    while(runner2){
-        digit=runner2.val+carry;
-        carry=(digit-digit%10)/10;
-        digit=digit%10;
-        SList.addBack(digit);
-        runner2=runner2.next;
-    }
-    if(carry){
-        SList.addBack(carry);
-    }
-    return sum;
+    return false;
 }
-function sumNumerals2(SList1, SList2){
-    var sum=new SList;
-    var runner1=SList1.head;
-    var runner2=SList2.head;
-    while(runner1.next){
-        runner1=runner1.next;
-    }
-    var term1=runner1;
-    while(runner2.next){
-        runner2=runner2.next;
-    }
-    var term2=runner2;
-    var digit=term1.val+term2.val;
-    var carry=(digit-digit%10)/10;
-    digit=digit%10;
-    SList.addFront(digit);
-    while(term1!=SList1.head&&term2!=SList2.head){
-        runner1=SList1.head;
-        runner2=SList2.head;
-        while(runner1.next!=term1){
-            runner1=runner1.next;
+SList.prototype.hasLoop=function(){
+    var slow=this.head;
+    var fast=this.head;
+    while(fast&&fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow==fast){
+            return true;
         }
-        term1=runner1;
-        while(runner2.next!=term2){
-            runner2=runner2.next;
-        }
-        term2=runner2;
-        digit=term1.val+term2.val+carry;
-        carry=(digit-digit%10)/10;
-        digit=digit%10;
-        SList.addFront(digit);
     }
-    while(term1!=SList1.head){
-        runner1=SList1.head;
-        while(runner1.next!=term1){
-            runner1=runner1.next;
-        }
-        term1=runner1;
-        digit=term1.val+carry;
-        carry=(digit-digit%10)/10;
-        digit=digit%10;
-        SList.addFront(digit);
-    }
-    while(term2!=SList2.head){
-        runner2=SList2.head;
-        while(runner2.next!=term2){
-            runner2=runner2.next;
-        }
-        term2=runner2;
-        digit=term2.val+carry;
-        carry=(digit-digit%10)/10;
-        digit=digit%10;
-        SList.addFront(digit);
-    }
-    if(carry){
-        SList.addFront(carry);
-    }
-    return sum;
+    return false;
 }
-function setupLoop(nodenum, loopNum){
-    var list=new SList;
-    var count=1;
-    list.head=new SLNode(1);
-    runner=list.head;
-    while(count<nodeNum){
+SLNode.prototype.hasLoop=function(){
+	var slow=this;
+    var fast=this;
+    while(fast&&fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow==fast){
+            return true;
+        }
+    }
+    return false;
+}
+function loopStart(list){
+    var slow=list.head;
+    var fast=list.head;
+    while(fast&&fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow==fast){
+            break;
+        }
+    }
+    if(!fast||!fast.next){
+        return null;
+    }
+    slow=list.head;
+    while(slow!=fast){
+        slow=slow.next;
+        fast=fast.next;
+    }
+    return slow;
+}
+SList.prototype.loopStart=function(){
+    var slow=this.head;
+    var fast=this.head;
+    while(fast&&fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow==fast){
+            break;
+        }
+    }
+    if(!fast||!fast.next){
+        return null;
+    }
+    slow=this.head;
+    while(slow!=fast){
+        slow=slow.next;
+        fast=fast.next;
+    }
+    return slow;
+}
+SLNode.prototype.loopStart=function(){
+	var slow=this;
+    var fast=this;
+    while(fast&&fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow==fast){
+            break;
+        }
+    }
+    if(!fast||!fast.next){
+        return null;
+    }
+    slow=this.head;
+    while(slow!=fast){
+        slow=slow.next;
+        fast=fast.next;
+    }
+    return slow;
+}
+function breakLoop(list){
+    var slow=list.head;
+    var fast=list.head;
+    while(fast&&fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow==fast){
+            break;
+        }
+    }
+    if(!fast||!fast.next){
+        return;
+    }
+    slow=list.head;
+    if(slow==fast){
+        while(fast.next!=slow){
+            fast=fast.next;
+        }
+        fast.next=null;
+        return;
+    }
+    while(slow.next!=fast.next){
+        slow=slow.next;
+        fast=fast.next;
+    }
+    fast.next=null;
+}
+SList.prototype.breakLoop=function(){
+    var slow=this.head;
+    var fast=this.head;
+    while(fast&&fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow==fast){
+            break;
+        }
+    }
+    if(!fast||!fast.next){
+        return;
+    }
+    slow=this.head;
+    if(slow==fast){
+        while(fast.next!=slow){
+            fast=fast.next;
+        }
+        fast.next=null;
+        return;
+    }
+    while(slow.next!=fast.next){
+        slow=slow.next;
+        fast=fast.next;
+    }
+    fast.next=null;
+}
+SLNode.prototype.breakLoop=function(){
+	var slow=this;
+    var fast=this;
+    while(fast&&fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow==fast){
+            break;
+        }
+    }
+    if(!fast||!fast.next){
+        return;
+    }
+    slow=this.head;
+    if(slow==fast){
+        while(fast.next!=slow){
+            fast=fast.next;
+        }
+        fast.next=null;
+        return;
+    }
+    while(slow.next!=fast.next){
+        slow=slow.next;
+        fast=fast.next;
+    }
+    fast.next=null;
+}
+function numberOfNodes(list){
+    var count=0;
+    var slow=list.head;
+    var fast=list.head;
+    while(fast&&fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
         count++;
-        node=new SLNode(count);
-        if(count==loopNum){
-            var loop=node;
+        if(slow==fast){
+            break;
         }
-        runner.next=node;
-        runner=runner.next;
     }
-    runner.next=loop;
+    if(!fast){
+        return count*2;
+    }else if(!fast.next){
+        return count*2+1;
+    }
+    slow=list.head;
+    if(slow==fast){
+        return count;
+    }
+    count=1;
+    while(slow!=fast){
+        slow=slow.next;
+        fast=fast.next;
+        count++;
+    }
+    while(fast.next!=slow){
+        fast=fast.next;
+        count++;
+    }
+    return count;
 }
-function flattenChildren(SList){
-    var p = SList.head;
-    while(p){
-        if(p.child){
-            var c = p.child;
-            while(c.next){
-                c = c.next;
-            }
-            c.next = p.next;
-            p.next = p.child;
+SList.prototype.numberOfNodes=function(){
+    var count=0;
+    var slow=this.head;
+    var fast=this.head;
+    while(fast&&fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+        count++;
+        if(slow==fast){
+            break;
         }
-        p=p.next;
+    }
+    if(!fast){
+        return count*2;
+    }else if(!fast.next){
+        return count*2+1;
+    }
+    slow=list.head;
+    if(slow==fast){
+        return count;
+    }
+    count=1;
+    while(slow!=fast){
+        slow=slow.next;
+        fast=fast.next;
+        count++;
+    }
+    while(fast.next!=slow){
+        fast=fast.next;
+        count++;
+    }
+    return count;
+}
+SLNode.prototype.numberOfNodes=function(){
+    var count=0;
+    var slow=this;
+    var fast=this;
+    while(fast&&fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+        count++;
+        if(slow==fast){
+            break;
+        }
+    }
+    if(!fast){
+        return count*2;
+    }else if(!fast.next){
+        return count*2+1;
+    }
+    slow=this;
+    if(slow==fast){
+        return count;
+    }
+    count=1;
+    while(slow!=fast){
+        slow=slow.next;
+        fast=fast.next;
+        count++;
+    }
+    while(fast.next!=slow){
+        fast=fast.next;
+        count++;
+    }
+    return count;
+}
+function swapPairs(list){
+    if(list.head&&list.head.next){
+        var runner=list.head;
+        list.head=runner.next;
+        runner.next=list.head.next;
+        list.head.next=runner;
+    }else{
+        return;
+    }
+    while(runner.next&&runner.next.next){
+        var temp=runner.next;
+        runner.next=temp.next;
+        temp.next=runner.next.next;
+        runner.next.next=temp;
+        runner=runner.next.next;
     }
 }
-// Altered flatten children that marks changes, allowing unflatten
-function flattenChildrenAltered(SList){ // preserves information using child pointers
-    var p = SList.head;
-    while(p){
-        if(p.child &&
-            p.child != p.next && // skips parent with flattened children mark
-            p.child != p){ // skips end of child branch mark
-            var c = p.child;
-            while(c.next){
-                c = c.next;
-            }
-            c.next = p.next;
-            p.next = p.child; // marks parent with flattened children
-            c.child = c; // marks end of child branch
-        }
-        p=p.next;
+SList.prototype.swapPairs=function(){
+    if(this.head&&this.head.next){
+        var runner=this.head;
+        this.head=runner.next;
+        runner.next=this.head.next;
+        this.head.next=runner;
+    }else{
+        return;
+    }
+    while(runner.next&&runner.next.next){
+        var temp=runner.next;
+        runner.next=temp.next;
+        temp.next=runner.next.next;
+        runner.next.next=temp;
+        runner=runner.next.next;
     }
 }
-function unflattenChildren(SList){
-    var runner = SList.head;
-    while(runner){
-        if(runner.child === runner.next && runner.child){
-            unflattenChild(runner);
-        }
-        runner = runner.next;
-    }
+SList.prototype.swapPairs=function(){
+	this.head=this.head.swapPairs();
 }
-function unflattenChild(p){
-    var c = p;
-    while(c.child != c){
-        if(c.child === c.next){
-            unflattenChild(c);
-        }
-        c = c.next;
-    }
-    p.next = c.next;
-    c.next = null;
-    c.child = null;
+SLNode.prototype.swapPairs=function(){
+    if(this.next){
+        var head=this.next;
+        this.next=head.next;
+        head.next=this;
+    }else{
+        return this;
+	}
+	var runner=this;
+    while(runner.next&&runner.next.next){
+        var temp=runner.next;
+        runner.next=temp.next;
+        temp.next=runner.next.next;
+        runner.next.next=temp;
+        runner=runner.next.next;
+	}
+	return head;
 }

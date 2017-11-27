@@ -20,17 +20,3 @@
  [-1,-1,-1,-1,-1, 1, 0, 1],
  [-1,-1,-1,-1,-1,-1, 1, 0]]
 [[B,C,H],[D,E],[A,D],[E],[],[E],[F,H],[F,G]]
-// All vertices reachable from given vertex (using adjacency list and vertices with .visited)
-function allVertices(list, vertex, vertices=[]){
-	if(vertex.visited){
-		return vertices;
-	}
-	vertex.visited=true;
-	vertices.push(vertex);
-	for(var i=0; i<list[vertex].length; i++){
-		if(!list[vertex][i].visited){
-			allVertices(list, list[vertex][i], vertices);
-		}
-	}
-	return vertices;
-}

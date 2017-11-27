@@ -78,17 +78,17 @@ function bestZibNum(num){
 	}
 	return index;
 }
-function rBinarySearch(arr, val){
-	if(!arr.length){
+function rBinarySearch(arr, val, left=0, right=arr.length-1){
+	if(left>right){
 		return false;
 	}
-	var search=Math.trunc(arr.length/2);
+	var search=Math.trunc((left+right)/2);
 	if(arr[search]===val){
 		return true;
 	}else if(arr[search]>val){
-		return rBinarySearch(arr.slice(0,search), val);
+		return rBinarySearch(arr, val, left, search-1);
 	}else{
-		return rBinarySearch(arr.slice(search+1, arr.length), val);
+		return rBinarySearch(arr, val, search+1, right);
 	}
 }
 function rGCF1(a, b){
@@ -110,7 +110,7 @@ function rGCF2(a, b){
 	while(b>a){
 		b-=a;
 	}
-	return rGCF2(a,b);
+	return rGCF2(a, b);
 }
 function tarai(x, y, z){
 	if(x<=y){

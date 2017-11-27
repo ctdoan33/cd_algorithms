@@ -40,18 +40,20 @@ function swapPairs(arr){
 function removeDuplicates(arr){
     for(var i=arr.length-1; i>0; i--){
         while(arr[i]==arr[i-1]){
-            for(var k=i; k<arr.length-1;k++){
-                arr[i]=arr[i+1];
+            for(var j=i; j<arr.length-1; j++){
+                arr[j]=arr[j+1];
             }
             arr.pop();
         }
     }
 }
 function removeDuplicatesNoNestedLoops(arr){
-    for(var i=arr.length-1; i>0; i--){
-        if(arr[i]=arr[i-1]){
-            arr.splice(i, 1);
+    for(var i=0, j=1; j<arr.length; j++){
+        if(arr[i]!=arr[j]){
+			i++;
+			arr[i]=arr[j];
         }
     }
-    return arr;
+	arr.length=i+1;
+	return arr;
 }

@@ -37,21 +37,7 @@ function QueueUsingTwoStacks(){
         return stack2.top();
     }
     this.contains=function(val){
-        var contains;
-        var size=stack1.size();
-        while(!stack2.isEmpty()){
-            stack1.push(stack2.pop());
-        }
-        while(!stack1.isEmpty()){
-            if(stack1.top==val){
-                contains=true;
-            }
-            stack2.push(stack1.pop());
-        }
-        for(var i=0; i<size; i++){
-            stack1.push(stack2.pop());
-        }
-        return contains;
+        return stack1.contains(val)||stack2.contains(val);
     }
     this.empty=function(){
         return stack1.isEmpty()&&stack2.isEmpty();
@@ -61,7 +47,8 @@ function QueueUsingTwoStacks(){
     }
 }
 function isPalindrome(Queue){
-    var half = (Queue.size()-1)/2;
+	var size = Queue.size();
+    var half = (size-1)/2;
     var tempStack=new Stack();
     var pali=true;
     for(var i=0; i<half; i++){
@@ -85,7 +72,6 @@ function SLParent(){
     this.remove=function(){
         var temp=head;
         head=head.next;
-        temp.next=null;
         return temp.val;
     }
     this.look=function(){
@@ -94,7 +80,7 @@ function SLParent(){
     this.contains=function(val){
         var runner=head;
         while(runner){
-            if(runner.val==val){
+            if(runner.val === val){
                 return true;
             }
             runner=runner.next;
@@ -102,10 +88,7 @@ function SLParent(){
         return false;
     }
     this.isEmpty=function(){
-        if(head){
-            return false;
-        }
-        return true;
+		return !head;
     }
     this.size=function(){
         var count=0;
@@ -157,43 +140,58 @@ function Deque(){
         }
     }
     this.pushBack=function(val){
-        tail.next=new SLNode(val);
-        tail=tail.next;
-        if(!head){
-            head=tail;
-        }
+		if(!head){
+			head=new SLNode(val);
+			tail=head;
+		}else{
+			tail.next=new SLNode(val);
+			tail=tail.next;
+		}
     }
     this.popFront=function(){
+		if(!head){
+			return;
+		}
         var temp=head;
         head=head.next;
-        temp.next=null;
         if(!head){
             tail=null;
         }
         return temp.val;
     }
     this.popBack=function(val){
-        var temp=tail;
+		if(!head){
+			return;
+		}
         var runner=head;
         while(runner.next&&runner.next!=tail){
-            runner=runner.next
-        }
-        runner.next=null;
-        if(temp==head){
-            head=null;
-        }
+            runner=runner.next;
+		}
+		var temp=tail;
+        if(runner==tail){
+			head=null;
+			tail=null;
+        }else{
+			tail=runner;
+		}
         return temp.val;
     }
     this.front=function(){
+		if(!head){
+			return;
+		}
         return head.val;
     }
     this.back=function(){
+		if(!head){
+			return;
+		}
         return tail.val;
     }
     this.contains=function(val){
         var runner=head;
         while(runner){
-            if(runner.val==val){
+            if(runner.val===val){
                 return true;
             }
             runner=runner.next;
@@ -201,10 +199,7 @@ function Deque(){
         return false;
     }
     this.isEmpty=function(){
-        if(head){
-            return false;
-        }
-        return true;
+        return !head;
     }
     this.size=function(){
         var count=0;
@@ -258,7 +253,8 @@ function removeNewestMin(Stack){
             tempQueue.dequeue();
         }else{
             Stack.push(tempQueue.dequeue());
-        }
+		}
+		count++;
     }
     while(!Stack.isEmpty()){
         tempQueue.enqueue(Stack.pop());
@@ -286,7 +282,8 @@ function removeOldestMin(Stack){
             tempQueue.dequeue();
         }else{
             Stack.push(tempQueue.dequeue());
-        }
+		}
+		count++;
     }
     while(!Stack.isEmpty()){
         tempQueue.enqueue(Stack.pop());

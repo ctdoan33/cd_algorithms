@@ -3,14 +3,14 @@ function countdown(num){
     for(var i=num; i>=0; i--){
         arr.push(i);
     }
-    return arr; //array should be num+1 long
+    return arr; // array should be num+1 long
 }
 function printAndReturn(arr){
     console.log(arr[0]);
     return arr[1];
 }
 function firstPlusLength(arr){
-    return arr[0]+arr.length; //a string is concatenated, a boolean is summated based on its value
+    return arr[0]+arr.length; // a string is concatenated, a boolean is summated based on its value (1 for true, 0 for false)
 }
 function valuesGreaterThanSecond(){
     var arr=[1,3,5,7,9,13];
@@ -26,19 +26,20 @@ function valuesGreaterThanSecond(){
 function valuesGreaterThanSecondGeneralized(arr){
     var count=0;
     for(var i=0; i<arr.length;i++){
-        if(arr[i]>arr[1]){
+        if(arr[i]>arr[1]){ // if array is only one element long, still works since this evaluates to false
             console.log(arr[i]);
             count++;
         }
-    }
+	}
+	return count; // array one element long will return 0
 }
 function thisLengthThatValue(num1, num2){
     var arr=[];
     for(var i=1; i<=num1; i++){
         arr.push(num2);
     }
-    if(num1=num2){
-        console.log("jinx");
+    if(num1==num2){
+        console.log("Jinx!");
     }
     return arr;
 }

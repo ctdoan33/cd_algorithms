@@ -1,20 +1,15 @@
 function dedupe(str){
-	var arr=[];
+	var hash={};
+	var revstr="";
 	for(var i=str.length-1; i>=0; i--){
-		var unique=true;
-		for(var j=0; j<arr.length; j++){
-			if(str[i]==arr[j]){
-				unique=false;
-				break;
-			}
-		}
-		if(unique){
-			arr.push(str[i]);
+		if(!hash[str[i]]){
+			hash[str[i]]=1;
+			revstr+=str[i];
 		}
 	}
 	var newstr="";
-	for(i=arr.length-1; i>=0; i--){
-		newstr+=arr[i];
+	for(i=revstr.length-1; i>=0; i--){
+		newstr+=revstr[i];
 	}
 	return newstr;
 }
@@ -244,7 +239,7 @@ function isPangram(str){
 function isPerfectPangram(str){
 	var chars={"a":1,"b":1,"c":1,"d":1,"e":1,"f":1,"g":1,"h":1,"i":1,"j":1,"k":1,"l":1,"m":1,"n":1,"o":1,"p":1,"q":1,"r":1,"s":1,"t":1,"u":1,"v":1,"w":1,"x":1,"y":1,"z":1};
 	for(var i=0; i<str.length; i++){
-		if((str[i]>="A"&&str[i]<="Z")||(str[i]>="a"&&str[i]<="z")){
+		if(str[i].toLowerCase() in chars){
 			if(chars[str[i].toLowerCase()]){
 				chars[str[i].toLowerCase()]--;
 			}else{

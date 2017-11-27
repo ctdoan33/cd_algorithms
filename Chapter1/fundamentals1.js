@@ -34,11 +34,10 @@ function dontWorryBeHappy(){
     }
 }
 function countingTheDojoWay(){
-    var j;
     for(var i=1; i<=100; i++){
-        j=i;
+        var j=i;
         while(j>=10){
-            j-=10
+            j-=10;
         }
         if(j==0){
             console.log("Coding Dojo");
@@ -49,16 +48,14 @@ function countingTheDojoWay(){
             if(j==0){
                 console.log("Coding");
             }else{
-            console.log(i);
+            	console.log(i);
             }
         }
     }
 }
 function multiplesOfThreeButNotAll(){
     for(var i=-300; i<=0; i+=3){
-        if(i==-3||i==-6){
-            continue;
-        }else{
+        if(i!=-3&&i!=-6){
             console.log(i);
         }
     }
@@ -80,7 +77,7 @@ function whoaThatSuckersHuge(){
     }
     console.log(sum);
 }
-function youSayItsYourBirthday(num1,num2){
+function youSayItsYourBirthday(num1, num2){
     var birthMonth=3;
     var birthDay=3;
     if((num1==birthMonth&&num2==birthDay)||(num2==birthMonth&&num1==birthDay)){
@@ -104,7 +101,7 @@ function leapYear(year){
         console.log("That is a leap year");
     }else{
         while(year>=100){
-            year-=100
+            year-=100;
         }
         if(year!=0){
             while(year>=4){
@@ -114,20 +111,23 @@ function leapYear(year){
                 console.log("That is a leap year");
             }
         }
-    }
+	}
+	console.log("That is not a leap year");
 }
 function flexibleCountdown(lowNum, highNum, mult){
-    for(var i=highNum; i>-lowNum; i-=mult){
+    for(var i=highNum; i>=lowNum; i-=mult){
         console.log(i);
     }
 }
 function theFinalCountdown(param1,param2,param3,param4){
-    var count=param2;
+	var count=0;
+	while(count<param2){
+		count+=param1;
+	}
     while(count<param3){
-        if(count==param4){
-            continue;
-        }
-        console.log(count);
-        count+=param1;
+        if(count!=param4){
+			console.log(count);
+		}
+		count+=param1;
     }
 }

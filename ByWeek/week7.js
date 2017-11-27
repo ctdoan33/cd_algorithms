@@ -1,8 +1,8 @@
-function reverse(Slist){
-    if(!SList.head || !SList.head.next){
+function reverse(list){
+    if(!list.head || !list.head.next){
         return;
     }
-    var prev = SList.head;
+    var prev = list.head;
     var runner = prev.next;
     var temp = runner.next;
     while(temp){
@@ -12,23 +12,23 @@ function reverse(Slist){
         temp = temp.next;
     }
     runner.next = prev;
-    SList.head = null;
+    list.head = null;
     header = runner;
 }
-function kthLastNode(SList, k){
+function kthLastNode(list, k){
     var count = 0;
-    var runner = SList.head;
+    var runner = list.head;
     while(runner){
         count++;
         runner = runner.next;
     }
-    for(runner=SList.head; count>k; count--){
+    for(runner=list.head; count>k; count--){
         runner = runner.next;
     }
     return runner.val;
 }
-function flattenChildren(SList){
-    var p = SList.head;
+function flattenChildren(list){
+    var p = list.head;
     while(p){
         if(p.child){
             var c = p.child;
@@ -37,52 +37,50 @@ function flattenChildren(SList){
             }
             c.next = p.next;
             p.next = p.child;
-            p.child = null;
         }
         p=p.next;
     }
 }
-function flattenChildrenAltered(SList){ // preserves information using child pointers
-    var p = SList.head;
+function flattenChildrenAltered(list){
+    var p = list.head;
     while(p){
-        if(p.child &&
-            p.child != p.next && // skips parent with flattened children mark
-            p.child != p){ // skips end of child branch mark
+        if(p.child){
             var c = p.child;
             while(c.next){
                 c = c.next;
             }
             c.next = p.next;
-            p.next = p.child; // marks parent with flattened children
-            c.child = c; // marks end of child branch
+            p.next = p.child;
+            p.child = c; // a parent's child pointer will point to last node of its child
         }
-        p=p.next;
+        p = p.next;
     }
 }
-function unflattenChildren(SList){
-    var runner = SList.head;
+function unflattenChildren(list){
+    var runner = list.head;
     while(runner){
-        if(runner.child === runner.next && runner.child){
+        if(runner.child){
             unflattenChild(runner);
         }
         runner = runner.next;
     }
 }
 function unflattenChild(p){
-    var c = p;
-    while(c.child != c){
-        if(c.child === c.next){
-            unflattenChild(c);
+	var runner = p;
+	var child = p.next;
+    while(p.child != runner){
+        if(runner.next.child){ // runs unflatten recursively for complex inputs
+            unflattenChild(runner.next);
         }
-        c = c.next;
-    }
-    p.next = c.next;
-    c.next = null;
-    c.child = null;
+        runner = runner.next;
+	}
+	p.child = child;
+	p.next = runner.next;
+    runner.next = null;
 }
-function hasLoop(SList){
-    var slow = SList.head;
-    var fast = SList.head;
+function hasLoop(list){
+    var slow = list.head;
+    var fast = list.head;
     while(fast && fast.next){
         slow = slow.next;
         fast = fast.next.next;
@@ -92,32 +90,35 @@ function hasLoop(SList){
     }
     return false;
 }
-function breakLoop(SList){
-    var slow = SList.head;
-    var fast = SList.head;
+function breakLoop(list){
+    var slow = list.head;
+	var fast = list.head;
+	var broken = false; // will return whether a loop has been broken
     while(fast && fast.next){
         slow = slow.next;
         fast = fast.next.next;
         if(slow == fast){
+			broken=true;
             break;
         }
+	}
+    if(!fast || !fast.next){ // no loop
+        return broken;
     }
-    if(!fast || !fast.next){
-        return;
-    }
-    slow = SList.head;
-    if(slow == fast){
-        while(fast.next != slow){
+    slow = list.head;
+    if(slow == fast){ // loop involves head node
+        while(fast.next != slow){ // find node before head to break
             fast = fast.next;
         }
         fast.next = null;
-        return;
+        return broken;
     }
-    while(slow.next != fast.next){
+    while(slow.next != fast.next){ // find nodes before loop
         slow = slow.next;
         fast = fast.next;
     }
-    fast.next = null;
+	fast.next = null; // break loop
+	return broken;
 }
 function DLNode(value){
     this.val = value;
@@ -138,17 +139,16 @@ function DList(){
         }
     }
     this.pop = function(){
+		if(!this.tail){
+			return;
+		}
         var temp = this.tail;
-        if(!temp){
-            return;
-        }
         if(this.head == temp){
             this.head = null;
             this.tail = null;
         }else{
             this.tail = temp.prev;
             this.tail.next = null;
-            temp.prev = null;
         }
         return temp.val;
     }
@@ -205,7 +205,8 @@ DList.prototype.kthToLastValue = function(k){
         }
         runner = runner.prev;
         k--;
-    }
+	}
+	return;
 }
 DList.prototype.palindrome = function(){
     var runner1 = this.head;

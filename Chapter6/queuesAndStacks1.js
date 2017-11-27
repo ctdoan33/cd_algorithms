@@ -6,28 +6,36 @@ function SLQueue(){
     var head=null;
     var tail=null;
     this.enqueue=function(val){
-        tail.next=new SLNode(val);
-        tail=tail.next;
-        if(!head){
-            head=tail;
-        }
+		if(!head){
+			head = new SLNode(val);
+			tail = head;
+		}else{
+			tail.next = new SLNode(val);
+			tail = tail.next;
+		}
+		return this;
     }
     this.dequeue=function(){
+		if(!head){
+			return;
+		}
         var temp=head;
         head=head.next;
-        temp.next=null;
         if(!head){
             tail=null;
         }
         return temp.val;
     }
     this.front=function(){
+		if(!head){
+			return;
+		}
         return head.val;
     }
     this.contains=function(val){
         var runner=head;
         while(runner){
-            if(runner.val==val){
+            if(runner.val===val){
                 return true;
             }
             runner=runner.next;
@@ -35,10 +43,7 @@ function SLQueue(){
         return false;
     }
     this.isEmpty=function(){
-        if(head){
-            return true;
-        }
-        return false;
+        return !head;
     }
     this.size=function(){
         var count=0;
@@ -46,21 +51,22 @@ function SLQueue(){
         while(runner){
             count++;
             runner=runner.next;
-        }
+		}
+		return count;
     }
 }
 function compareQueues(SLQueue1, SLQueue2){
-    if(SLQueue1.size()!=SLQueue2.size()){
+    var size=SLQueue1.size();
+    if(size!=SLQueue2.size()){
         return false;
     }
     var equal=true;
-    var size=SLQueue1.size();
     for(var i=0; i<size; i++){
         if(SLQueue1.top()!==SLQueue2.top()){
             equal==false;
         }
-        SLQueue1.enqueue(SLQueue1.dequeue())
-        SLQueue2.enqueue(SLQueue2.dequeue())
+        SLQueue1.enqueue(SLQueue1.dequeue());
+        SLQueue2.enqueue(SLQueue2.dequeue());
     }
     return equal;
 }
@@ -90,10 +96,10 @@ function removeLastMinimum(){
             index=i;
             min=SLQueue.front();
         }
-        SLQueue.enqueue(SLQueue.dequeue())
+        SLQueue.enqueue(SLQueue.dequeue());
     }
     for(var j=0; j<size; j++){
-        if(j==i){
+        if(j==index){
             SLQueue.dequeue();
         }else{
             SLQueue.enqueue(SLQueue.dequeue());
@@ -101,18 +107,19 @@ function removeLastMinimum(){
     }
 }
 function interleaveQueue(SLQueue){
-    var size = SLQueue.size();
-    if(!size){
-        return;
-    }
-    SLQueue.enqueue(SLQueue.dequeue())
+    var size=SLQueue.size();
     var tempQueue=new SLQueue();
-    for(var i=0; i<size/2-1; i++){
+    for(var i=0; i<size/2; i++){
         tempQueue.enqueue(SLQueue.dequeue());
-    }
-    for(var i=0; i<size/2-1; i++){
-        SLQueue.enqueue(tempQueue.dequeue());
-        SLQueue.enqueue(SLQueue.dequeue());
+	}
+	var alternate=true;
+    for(var i=0; i<size; i++){
+		if(alternate){
+			SLQueue.enqueue(tempQueue.dequeue());
+		}else{
+			SLQueue.enqueue(SLQueue.dequeue());
+		}
+		alternate=!alternate;
     }
 }
 function ArrStack(){
@@ -128,17 +135,14 @@ function ArrStack(){
     }
     this.contains=function(val){
         for(var i=0; i<stack.length; i++){
-            if(stack[i]==val){
+            if(stack[i]===val){
                 return true;
             }
         }
         return false;
     }
     this.isEmpty=function(){
-        if(stack==[]){
-            return true;
-        }
-        return false;
+        return !stack.length;
     }
     this.size=function(){
         return stack.length;
@@ -152,9 +156,11 @@ function SLStack(){
         head=temp;
     }
     this.pop=function(){
+		if(!head){
+			return;
+		}
         var temp=head;
         head=head.next;
-        temp.next=null;
         return temp.val;
     }
     this.top=function(){
@@ -163,7 +169,7 @@ function SLStack(){
     this.contains=function(val){
         var runner=head;
         while(runner){
-            if(runner.val==val){
+            if(runner.val===val){
                 return true;
             }
             runner=runner.next;
@@ -171,10 +177,7 @@ function SLStack(){
         return false;
     }
     this.isEmpty=function(){
-        if(head){
-            return false;
-        }
-        return true;
+        return !head;
     }
     this.size=function(){
         var count=0;

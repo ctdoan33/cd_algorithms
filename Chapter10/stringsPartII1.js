@@ -2,13 +2,11 @@ function stringToWordArray1(str){
 	var arr=[];
 	var substr="";
 	for(var i=0; i<=str.length; i++){
-		if(str[i]==" "||i==str.length){
-			arr.push(substr);
-			substr="";
-		}else if(str[i]=="\\" && (str[i+1]=="t"||str[i+1]=="n")){
-			arr.push(substr);
-			substr="";
-			i++;
+		if(str[i]==" "||str[i]=="\t"||str[i]=="\n"||i==str.length){
+			if(substr){
+				arr.push(substr);
+				substr="";
+			}
 		}else{
 			substr+=str[i];
 		}
@@ -19,14 +17,13 @@ function stringToWordArray2(str){
 	var arr=[];
 	var substr="";
 	for(var i=0; i<=str.length; i++){
-		if((str[i]>="A"&&str[i]<="Z")||(str[i]>="a"&&str[i]<="z")){
+		if(str[i]==" "||str[i]=="\t"||str[i]=="\n"||i==str.length){
+			if(substr){
+				arr.push(substr);
+				substr="";
+			}
+		}else if((str[i]>="A"&&str[i]<="Z")||(str[i]>="a"&&str[i]<="z")){
 			substr+=str[i];
-		}else if(substr!=""||i==str.length){
-			arr.push(substr);
-			substr="";
-		}
-		if(str[i]=="\\"&&(str[i+1]=="t"||str[i+1]=="n")){
-			i++;
 		}
 	}
 	return arr;
@@ -34,18 +31,12 @@ function stringToWordArray2(str){
 function longestWord1(str){
 	var word="";
 	var substr="";
-	for(var i=0; i<str.length; i++){
-		if(str[i]==" "){
+	for(var i=0; i<=str.length; i++){
+		if(str[i]==" "||str[i]=="\t"||str[i]=="\n"||i==str.length){
 			if(substr.length>word.length){
 				word=substr;
 			}
 			substr="";
-		}else if(str[i]=="\\"&&(str[i+1]=="t"||str[i+1]=="n")){
-			if(substr.length>word.length){
-				word=substr;
-			}
-			substr="";
-			i++;
 		}else{
 			substr+=str[i];
 		}
@@ -55,17 +46,14 @@ function longestWord1(str){
 function longestWord2(str){
 	var word="";
 	var substr="";
-	for(var i=0; i<str.length; i++){
-		if((str[i]>="A"&&str[i]<="Z")||(str[i]>="a"&&str[i]<="z")){
-			substr+=str[i];
-		}else{
+	for(var i=0; i<=str.length; i++){
+		if(str[i]==" "||str[i]=="\t"||str[i]=="\n"||i==str.length){
 			if(substr.length>word.length){
 				word=substr;
 			}
 			substr="";
-		}
-		if(str[i]=="\\"&&(str[i+1]=="t"||str[i+1]=="n")){
-			i++;
+		}else if((str[i]>="A"&&str[i]<="Z")||(str[i]>="a"&&str[i]<="z")){
+			substr+=str[i];
 		}
 	}
 	return word;
@@ -121,67 +109,43 @@ function reverseWordOrder2(str){
 }
 function uniqueWords1(str){
 	var substr="";
-	var arr=[];
+	var newstr="";
+	var hash={};
 	for(var i=0; i<=str.length; i++){
 		if(str[i]==" "||i==str.length){
-			var unique=true;
-			for(var j=0; j<arr.length; j++){
-				if(substr==arr[j][0]){
-					unique=false;
-					arr[j][1]+=1;
-					break;
+			if(!hash[substr]){
+				hash[substr]=1;
+				if(newstr){
+					newstr+=" "+substr;
+				}else{
+					newstr=substr;
 				}
-			}
-			if(unique){
-				arr.push([substr,1]);
 			}
 			substr="";
 		}else{
 			substr+=str[i];
 		}
 	}
-	unique=[];
-	for(i=0; i<arr.length; i++){
-		if(arr[i][1]==1){
-			unique.push(arr[i][0]);
-		}
-	}
-	var newstr=unique[0];
-	for(i=1; i<unique.length; i++){
-		newstr+=" "+unique[i];
-	}
 	return newstr;
 }
 function uniqueWords2(str){
 	var substr="";
-	var arr=[];
+	var newstr="";
+	var hash={};
 	for(var i=0; i<=str.length; i++){
-		if((str[i]>="A"&&str[i]<="Z")||(str[i]>="a"&&str[i]<="z")){
+		if(str[i].toLowerCase()>="a"&&str[i].toLowerCase()<="z"){
 			substr+=str[i].toLowerCase();
-		}else if(substr!=""){
-			var unique=true;
-			for(var j=0; j<arr.length; j++){
-				if(substr==arr[j][0]){
-					unique=false;
-					arr[j][1]+=1;
-					break;
+		}else if(substr){
+			if(!hash[substr]){
+				hash[substr]=1;
+				if(newstr){
+					newstr+=" "+substr;
+				}else{
+					newstr=substr;
 				}
-			}
-			if(unique){
-				arr.push([substr,1]);
 			}
 			substr="";
 		}
-	}
-	unique=[];
-	for(i=0; i<arr.length; i++){
-		if(arr[i][1]==1){
-			unique.push(arr[i][0]);
-		}
-	}
-	var newstr=unique[0];
-	for(i=1; i<unique.length; i++){
-		newstr+=" "+unique[i];
 	}
 	return newstr;
 }
@@ -287,7 +251,6 @@ function optimalSequence(arr, sequence=[]){
 	var optimal=null;
 	for(var i=0; i<arr.length; i++){
 		var str="";
-		var ordered=true;
 		for(var j=0; j<arr[i].length; j++){
 			if(arr[i][j]=="?"){
 				if(sequence.length){
@@ -297,14 +260,13 @@ function optimalSequence(arr, sequence=[]){
 				}
 			}else{
 				if(sequence.length&&arr[i][j]<sequence[sequence.length-1][j]){
-					ordered=false;
-					break;
+					return null;
 				}else{
 					str+=arr[i][j];
 				}
 			}
 		}
-		if(ordered&&(!opstr||str<opstr)){
+		if(!opstr||str<opstr){
 			var test=sequence.slice();
 			test.push(str);
 			var result=optimalSequence(arr.slice(0,i).concat(arr.slice(i+1)), test);

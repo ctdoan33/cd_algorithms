@@ -26,10 +26,10 @@ function SSL(){
         node.next = this.head;
         this.head = node;
     }
-    this.contains = function(value){
-        var runner = this.head
+    this.contains = function(val){
+        var runner = this.head;
         while(runner){
-            if(runner.val===value){
+            if(runner.val===val){
                 return true;
             }else{
                 runner=runner.next;
@@ -38,21 +38,22 @@ function SSL(){
         return false;
     }
     this.removeFront = function(){
-        var newhead = this.head.next;
-        this.head.next = null;
-        this.head = newhead
+        this.head = this.head.next;
         return this.head;
     }
     this.length = function(){
-    var runner = this.head;
-    var count = 0;
-    while(runner){
-        runner = runner.next;
-        count++;
-    }
-    return count;
+		var runner = this.head;
+		var count = 0;
+		while(runner){
+			runner = runner.next;
+			count++;
+		}
+		return count;
     }
     this.max = function(){
+		if(!this.head){
+			return;
+		}
         var runner = this.head;
         var max = runner.val;
         while(runner.next){
@@ -64,6 +65,9 @@ function SSL(){
         return max;
     }
     this.average = function(){
+		if(!this.head){
+			return;
+		}
         var runner = this.head;
         var sum = 0;
         var count = 0;
@@ -75,6 +79,9 @@ function SSL(){
         return sum/count;
     }
     this.minToFront = function(){
+		if(!this.head){
+			return;
+		}
         var runner = this.head;
         var min = runner;
         var prev = null;
@@ -103,6 +110,9 @@ function SSL(){
         }
     }
     this.moveMaxToBack = function(){
+		if(!this.head){
+			return;
+		}
         var runner = this.head;
         var max = runner;
         var prev = null;
@@ -122,17 +132,16 @@ function SSL(){
         max.next = null;
     }
     this.removeNegatives = function(){
-        var runner = this.head;
-        while(runner.val < 0){
-            this.head = runner.next;
-            runner.next = null;
-            runner = this.head;
-        }
+        while(this.head && this.head.val < 0){
+            this.head = this.head.next;
+		}
+		if(!this.head){
+			return;
+		}
+		var runner=this.head;
         while(runner.next){
             if(runner.next.val < 0){
-                negnode = runner.next;
-                runner.next = negnode.next;
-                negnode.next = null;
+                runner.next = runner.next.next;
             }else{
                 runner = runner.next;
             }

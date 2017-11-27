@@ -14,11 +14,11 @@ function flatten(arr){
 function flattenInPlace(arr){
     for(var i=arr.length-1; i>=0; i--){
         if(Array.isArray(arr[i])){
-            if(arr[i]===[]){
-                for(var j=i; j<arr.length-2; j++){
+            if(arr[i].length==0){
+                for(var j=i; j<arr.length-1; j++){
                     arr[j]=arr[j+1];
                 }
-                arr.pop();
+				arr.pop();
             }else{
                 for(var j=arr[i].length-1; j>0; j--){
                     for(var k=arr.length-1; k>i; k--){
@@ -29,7 +29,8 @@ function flattenInPlace(arr){
                 arr[i]=arr[i][0];
             }
         }
-    }
+	}
+	return arr;
 }
 function removeDuplicates(arr){
     var newarr=[];
@@ -52,36 +53,31 @@ function removeDuplicatesInPlace(arr){
             length++;
         }
     }
-    arr.length=length;
+	arr.length=length;
+	return arr;
 }
 function mode(arr){
-    var modeindex;
+    var modeindex=0;
     var modecount=0;
-    var count;
     var hash={};
     for(var i=0; i<arr.length; i++){
         if(!hash[arr[i]]){
-            count=0;
             hash[arr[i]]==1;
-            for(var j=i; j<arr.length; j++){
-                if(arr[i]===arr[j]){
-                    count++;
-                }
-            }
-            if(count>modecount){
-                modecount=count;
-                modeindex=i;
-            }
-        }
+        }else{
+			hash[arr[i]]++;
+		}
+		if(hash[arr[i]]>modecount){
+			modecount=hash[arr[i]];
+			modeindex=i;
+		}
     }
     return arr[modeindex];
 }
-function modeNoNew(arr){
+function modeNoNew(arr){ // increased time, no longer linear
     var modeindex;
     var modecount=0;
-    var count;
     for(var i=0; i<arr.length; i++){
-        count=0;
+        var count=0;
         for(var j=i; j<arr.length; j++){
             if(arr[i]===arr[j]){
                 count++;

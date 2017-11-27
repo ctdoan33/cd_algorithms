@@ -49,10 +49,10 @@ function unevenDigits(num, idx=0){
 	var str=String(num);
 	if(idx==str.length){
 		return num;
-	}else if(Number(str[idx])%2===0){
-		return unevenDigits(Number(str.slice(0, idx)+str.slice(idx+1)), idx);
-	}else{
+	}else if(Number(str[idx])%2){
 		return unevenDigits(num, idx+1);
+	}else{
+		return unevenDigits(Number(str.slice(0, idx)+str.slice(idx+1)), idx);
 	}
 }
 function generateAllCoinChange(cents, coin=2, change={"quarters":0, "dimes":0, "nickels":0, "pennies":0}, arr=[]){

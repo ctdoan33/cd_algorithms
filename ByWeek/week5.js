@@ -6,22 +6,36 @@ function SLQueue(){
     this.head = null;
     this.tail = null;
     this.enqueue = function(val){
-        this.tail.next = new SLNode(val);
-        this.tail = this.tail.next;
+		if(!this.head){
+			this.head = new SLNode(val);
+			this.tail = this.head;
+		}else{
+			this.tail.next = new SLNode(val);
+			this.tail = this.tail.next;
+		}
+		return this;
     }
     this.dequeue = function(){
+		if(!this.head){
+			return;
+		}
         var temp = this.head;
-        this.head = this.head.next;
-        temp.next = null;
+		this.head = this.head.next;
+		if(!this.head){
+            this.tail = null;
+        }
         return temp.val;
     }
     this.front = function(){
+		if(!this.head){
+			return;
+		}
         return this.head.val;
     }
     this.contains = function(val){
         var runner = this.head;
         while(runner){
-            if(runner.val==val){
+            if(runner.val === val){
                 return true;
             }
         }
@@ -37,21 +51,18 @@ function ArrStack(){
         return this.stack.pop();
     }
     this.top = function(){
-        if(!this.stack.length){
         return this.stack[this.stack.length-1];
-        }
-        return null;
     }
     this.contains = function(val){
         for(var i=0; i<this.stack.length; i++){
-            if(this.stack[i]==val){
+            if(this.stack[i] === val){
                 return true;
             }
         }
         return false;
     }
 }
-function copy(Stack){
+function copyWithStack(Stack){
     var tempStack = new Stack();
     var copy = new Stack();
     while(!Stack.isEmpty()){
@@ -63,7 +74,7 @@ function copy(Stack){
     }
     return copy;
 }
-function copy(Stack){
+function copyWithQueue(Stack){
     var tempQueue = new Queue();
     var copy = new Stack();
     while(!Stack.isEmpty()){
@@ -79,9 +90,10 @@ function copy(Stack){
     return copy;
 }
 function isPalindrome(Queue){
-    var half = (Queue.size()-1)/2;
-    var tempStack=new Stack();
-    var pali=true;
+	var size = Queue.size();
+    var half = (size-1)/2;
+    var tempStack = new Stack();
+    var pali = true;
     for(var i=0; i<half; i++){
         tempStack.push(Queue.front());
         Queue.enqueue(Queue.dequeue());
@@ -90,7 +102,7 @@ function isPalindrome(Queue){
         Queue.enqueue(Queue.dequeue());
     }
     for(i=0; i<half; i++){
-        if(tempStack.pop()!==Queue.front()){
+        if(tempStack.pop() !== Queue.front()){
             pali=false;
         }
         Queue.enqueue(Queue.dequeue());
@@ -100,7 +112,7 @@ function isPalindrome(Queue){
 function isPalindromeNoSize(Queue){
     var tempStack = new Stack();
     var size = 0;
-    while(Queue.front() != undefined){
+    while(Queue.front() !== undefined){
         tempStack.push(Queue.dequeue());
         size++;
     }
@@ -113,7 +125,7 @@ function isPalindromeNoSize(Queue){
     }
     var pali=true;
     for(i=0; i<size; i++){
-        if(Queue.dequeue()!==tempStack.top()){
+        if(Queue.dequeue() !== tempStack.top()){
             pali=false;
         }
         Queue.enqueue(tempStack.pop());

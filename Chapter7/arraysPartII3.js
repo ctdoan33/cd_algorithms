@@ -7,15 +7,15 @@ function medianOfSortedArrays(){
     }
     for(i=0; i<n/2-1; i++){
         var minIndex=0;
-        for(j=0; j<arguments.length; j++){
+        for(var j=1; j<arguments.length; j++){
             if(arguments[j][pointers[j]]<arguments[minIndex][pointers[minIndex]]){
                 minIndex=j;
             }
         }
-        pointers[minIndex]+=1;
+        pointers[minIndex]++;
     }
     var minIndex=0;
-    for(j=0; j<arguments.length; j++){
+    for(j=1; j<arguments.length; j++){
         if(arguments[j][pointers[j]]<arguments[minIndex][pointers[minIndex]]){
             minIndex=j;
         }
@@ -184,12 +184,10 @@ function maxOfSubarraySums(arr){
     var max=0;
     var submax=0;
     for(var i=0; i<arr.length; i++){
-        if(arr[i]>submax+arr[i]){
-            submax=arr[i];
-        }else{
-            submax+=arr[i];
-        }
-        if(submax>max){
+		submax+=arr[i];
+        if(submax<0){
+            submax=0;
+        }else if(submax>max){
             max=submax;
         }
     }

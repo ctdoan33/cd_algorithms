@@ -2,14 +2,18 @@ function ListNode(value){
     this.val=value;
     this.next=null;
 }
+// these are standalone functions that accept a ListNode pointer as head
+// this is because the book does not utilize an SLL object for this chapter
+// to see SLL object/class implementation, see week4
+// it is assumed the pointer points to an actual node for most functions
 function addFront(node, value){
-    var newnode=ListNode(value);
+    var newnode=new ListNode(value);
     newnode.next=node;
     return newnode;
 }
-function contains(node, value){
+function contains(node, val){
     while(node){
-        if(node.val===value){
+        if(node.val===val){
             return true;
         }else{
             node=node.next;
@@ -18,9 +22,7 @@ function contains(node, value){
     return false;
 }
 function removeFront(node){
-    var newhead=node.next;
-    node.next=null;
-    return newhead;
+    return node.next;
 }
 function front(node){
     return node.val;
@@ -36,9 +38,10 @@ function length(node){
 }
 function display(node){
     var runner=node;
-    var str="";
+	var str=String(node.val);
+	runner=runner.next;
     while(runner){
-        str+=runner.val;
+        str+=" "+runner.val;
         runner=runner.next;
     }
     return str;
@@ -76,31 +79,31 @@ function average(node){
     }
     return sum/count;
 }
-function back(ListNode){
-    var runner=ListNode;
+function back(node){
+    var runner=node;
     while(runner.next){
         runner=runner.next;
     }
     return runner.val;
 }
-function removeBack(ListNode){
-    var runner=ListNode;
+function removeBack(node){
+    var runner=node;
     while(runner.next.next){
         runner=runner.next;
     }
     runner.next=null;
-    return ListNode;
+    return node;
 }
-function addBack(ListNode, value){
-    var runner = ListNode;
+function addBack(node, value){
+    var runner=node;
     while(runner.next){
-        runner = runner.next;
+        runner=runner.next;
     }
-    runner.next = new ListNode(value);
-    return ListNode;
+    runner.next=new ListNode(value);
+    return node;
 }
-function minToFront(ListNode){
-    var runner=ListNode;
+function minToFront(node){
+    var runner=node;
     var min=runner;
     var prev=null;
     while(runner.next){
@@ -116,23 +119,23 @@ function minToFront(ListNode){
     }
     return min;
 }
-function moveMaxToBack(ListNode){
-    var runner = ListNode;
-    var max = runner;
-    var prev = null;
+function moveMaxToBack(node){
+    var runner=node;
+    var max=runner;
+    var prev=null;
     while(runner.next){
-        if(runner.next.val > max.val){
-            max = runner.next;
-            prev = runner;
+        if(runner.next.val>max.val){
+            max=runner.next;
+            prev=runner;
         }
-        runner = runner.next;
+        runner=runner.next;
     }
-    runner.next = max;
+    runner.next=max;
     if(prev){
-        prev.next = max.next;
+        prev.next=max.next;
     }else{
-        head = max.next;
+        node=max.next;
     }
-    max.next = null;
-    return head;
+    max.next=null;
+    return node;
 }

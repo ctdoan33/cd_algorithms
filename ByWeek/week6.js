@@ -37,7 +37,7 @@ function tacoTruck(arr){
                 lesser++;
             }
         }
-        if(greater <= arr.length/2&&lesser <= arr.length/2){
+        if(greater <= arr.length/2 && lesser <= arr.length/2){
             break;
         }
     }
@@ -51,7 +51,7 @@ function tacoTruck(arr){
                 lesser++;
             }
         }
-        if(greater <= arr.length/2&&lesser <= arr.length/2){
+        if(greater <= arr.length/2 && lesser <= arr.length/2){
             break;
         }
     }
@@ -60,16 +60,15 @@ function tacoTruck(arr){
 function arrbinarySearch(arr, val){
     var left = 0;
     var right = arr.length;
-    var index = (left+right-(left+right)%2)/2;
-    while(left != right){
+    while(left < right){
+		var index = Math.floor((left+right)/2);
         if(arr[index] > val){
-            left = index;
-        }else if(arr[index] < val){
             right = index;
+        }else if(arr[index] < val){
+            left = index+1;
         }else{
             return true;
         }
-        index = (left+right-(left+right)%2)/2;
     }
     return false;
 }
@@ -79,16 +78,16 @@ function minOfSortedRotated(arr){
     if(arr[left] < arr[right]){
         return arr[left];
     }
-    var index = (left+right+(left+right)%2)/2;
-    while(index != left){
-        if(arr[index] < arr[left]){
-            right = index;
-        }else{
+    var index = Math.floor((left+right)/2);
+    while(left < right){
+        if(arr[index] > arr[left]){
             left = index;
+        }else{
+            right = index;
         }
-        index = (left+right+(left+right)%2)/2;
+        index = Math.floor((left+right)/2);
     }
-    return arr[index];
+    return arr[index+1];
 }
 function flatten(arr){
     var newarr = [];

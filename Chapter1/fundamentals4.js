@@ -1,41 +1,41 @@
 function onlyKeepTheLastFew(arr, X){
-    for(var i=0; i<arr.length-X; i++){
+    for(var i=0; i<X; i++){
         arr[i]=arr[arr.length-X+i];
     }
-    arr.length-=arr.length-X;
+    arr.length=X;
     return arr;
 }
 function mathHelp(M, B){
     return -B/M;
 }
 function whatHappensToday(){
-    var rand=100*Math.random();
-    if(rand<10){
+    var rand=Math.random();
+    if(rand<.1){
         console.log("volcano");
-    }else if(rand<25){
+    }else if(rand<.25){
         console.log("tsunami");
-    }else if(rand<45){
+    }else if(rand<.45){
         console.log("earthquake");
-    }else if(rand<70){
+    }else if(rand<.70){
         console.log("blizzard");
     }else{
         console.log("meteor");
     }
 }
 function whatReallyHappensToday(){
-    if(Math.random*100<10){
+    if(Math.random()<.1){
         console.log("volcano");
     }
-    if(Math.random*100<15){
+    if(Math.random()<.15){
         console.log("tsunami");
     }
-    if(Math.random*100<20){
+    if(Math.random()<.20){
         console.log("earthquake");
     }
-    if(Math.random*100<25){
+    if(Math.random()<.25){
         console.log("blizzard");
     }
-    if(Math.random*100<30){
+    if(Math.random()<.30){
         console.log("meteor");
     }
 }
@@ -82,7 +82,7 @@ function moreAccurateGrades(score){
         if(mod<2){
             grade+="-";
         }else if(topbot>=8){
-            grade+="+"
+            grade+="+";
         }
     }
     console.log("Score: "+score+". Grade: "+grade);

@@ -36,21 +36,24 @@ function isStrictPalindrome(str){
     return true;
 }
 function isPalindrome(str){
-    var s=str.toLowerCase()
-    var newstr="";
-    for(var i=0; i<s.length; i++){
-        if(s[i]>="a"&&s[i]<="z"){
-            newstr+=s[i];
-        }
+    for(var i=0, j=str.length-1; i<j; i++, j--){
+        while(str[i].toLowerCase()<"a"||str[i].toLowerCase()>"z"){
+            i++;
+		}
+		while(str[j].toLowerCase()<"a"||str[j].toLowerCase()>"z"){
+            j--;
+		}
+		if(str[i].toLowerCase()!=str[j].toLowerCase()){
+			return false;
+		}
     }
-    return isStrictPalindrome(newstr);
+    return true;
 }
 function longestStrictPalindrome(str){
-    var newstr=""
-    var pali;
+    var newstr="";
     for(var i=str.length-1; i>0; i--){
         for(var j=0; j<str.length-i; j++){
-            pali=true;
+            var pali=true;
             for(var k=0; k<i/2; k++){
                 if(str[j+k]!=str[j+i-k]){
                     pali=false;
@@ -93,17 +96,23 @@ function dGetsJiggy(str){
     return newstr+" to the "+str[0];
 }
 function commonSuffix(arr){
-    var suffix="";
-    for(var i=0; i<arr[0].length-1; i++){
+    for(var i=1; i<=arr[0].length; i++){
+		var mismatch=false;
         for(var j=1; j<arr.length; j++){
-            if(arr[0][arr[0].length-i-1]!=arr[j][arr[j].length-i-1]){
-                for(var k=arr[0].length-i; k<arr[0].length; k++){
-                    suffix+=arr[0][k];
-                }
-                return suffix;
+            if(arr[0][arr[0].length-i]!=arr[j][arr[j].length-i]){
+				mismatch=true;
+				break;
             }
-        }
-    }
+		}
+		if(mismatch){
+			break;
+		}
+	}
+	var suffix="";
+	for(var k=arr[0].length-i+1; k<arr[0].length; k++){
+		suffix+=arr[0][k];
+	}
+	return suffix;
 }
 function bookIndex(arr){
     var index=arr[0].toString();

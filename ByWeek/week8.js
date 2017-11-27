@@ -41,17 +41,17 @@ function rFib(num){
 	}
 	return rFib(num-2)+rFib(num-1);
 }
-function rBinarySearch(arr, val){
-	if(!arr.length){
+function rBinarySearch(arr, val, left=0, right=arr.length-1){
+	if(left > right){
 		return false;
 	}
-	var search = Math.trunc(arr.length/2);
+	var search = Math.trunc((left+right)/2);
 	if(arr[search] === val){
 		return true;
 	}else if(arr[search] > val){
-		return rBinarySearch(arr.slice(0,search), val);
+		return rBinarySearch(arr, val, left, search-1);
 	}else{
-		return rBinarySearch(arr.slice(search+1, arr.length), val);
+		return rBinarySearch(arr, val, search+1, right);
 	}
 }
 function rGCF1(a, b){
@@ -93,13 +93,7 @@ function gotAnyGrapes(arr){
 	}else if(arr.length == 1){
 		return arr[0];
 	}
-	var sum1 = arr[0]+gotAnyGrapes(arr.slice(2));
-	var sum2 = gotAnyGrapes(arr.slice(1));
-	if(sum1 >= sum2){
-		return sum1;
-	}else{
-		return sum2;
-	}
+	return Math.max(arr[0]+gotAnyGrapes(arr.slice(2)), gotAnyGrapes(arr.slice(1)));
 }
 function binStrExpand(str, substr="", idx=0, arr=[]){
 	if(str.length == idx){

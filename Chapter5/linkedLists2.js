@@ -2,29 +2,29 @@ function ListNode(value){
     this.val=value;
     this.next=null;
 }
-function prependVal(ListNode, val, before){
+function prependVal(node, val, before){
     var newnode=new ListNode(val);
-    if(ListNode.val==before){
-        newnode.next=ListNode;
+    if(node.val===before){
+        newnode.next=node;
         return newnode;
     }
-    var runner=ListNode;
+    var runner=node;
     while(runner.next){
-        if(runner.next.val==before){
+        if(runner.next.val===before){
             newnode.next=runner.next;
             runner.next=newnode;
-            return ListNode;
+            return node;
         }
         runner=runner.next;
     }
     runner.next=newnode;
-    return ListNode;
+    return node;
 }
 function appendVal(list, val, after){
     var newnode=new ListNode(val);
     var runner=list;
     while(runner.next){
-        if(runner.val==after){
+        if(runner.val===after){
             newnode.next=runner.next;
             runner.next=newnode;
             return list;
@@ -45,23 +45,22 @@ function SList(){
 }
 function removeVal(ListNode, val){
     var runner=ListNode;
-    var temp;
     while(runner.val=val){
         ListNode=runner.next;
-        runner.next=null;
         runner=ListNode;
-    }
+	}
+	if(!runner){
+		return ListNode;
+	}
     while(runner.next){
         if(runner.next.val=val){
-            temp=runner.next;
-            runner.next=temp.next;
-            temp.next=null;
+            runner.next=runner.next.next;
         }else{
             runner=runner.next;
         }
     }
     return ListNode;
-}
+} // if no val found, no nodes are removed
 function splitOnValue(list, num){
     var runner=list;
     while(runner.next){
@@ -73,26 +72,22 @@ function splitOnValue(list, num){
         runner=runner.next;
     }
 }
-function removeNegatives(ListNode){
-    var runner = ListNode;
-    while(runner.val < 0){
-        ListNode = runner.next;
-        runner.next = null;
-        runner = ListNode;
-        if(!runner){
-            return null;
-        }
-    }
+function removeNegatives(node){
+    while(node&&node.val<0){
+        node=node.next;
+	}
+	if(!node){
+		return node;
+	}
+	var runner=node;
     while(runner.next){
-        if(runner.next.val < 0){
-            negnode = runner.next;
-            runner.next = negnode.next;
-            negnode.next = null;
+        if(runner.next.val<0){
+            runner.next=runner.next.next;
         }else{
-            runner = runner.next;
+            runner=runner.next;
         }
     }
-    return ListNode;
+    return node;
 }
 function concat(list1, list2){
     var runner=list1;
@@ -104,59 +99,44 @@ function concat(list1, list2){
 }
 function partition(ListNode, value){
     var runner=ListNode;
-    // find last node
+    // find last node, will be node before right side of partition
     while(runner.next){
         runner=runner.next;
     }
-    var last=runner;
-    // if head node have value, move to end
-    var temp;
-    while(ListNode.val=value){
-        temp=ListNode
-        last.next=temp;
-        ListNode=temp.next;
-        temp.next=null;
-        last=temp;
-    }
-    // move nodes with value to end
-    runner=ListNode;
-    while(runner.next){
-        if(runner.next.val=value){
-            temp=runner.next
-            last.next=temp;
-            runner.next=temp.next;
-            temp.next=null;
-            last=temp;
-        }else{
-            runner-runner.next;
-        }
-    }
-    // if no nodes with value, stop
-    if(!temp){
-        return null;
-    }
-    // move nodes with greater value from head
-    while(ListNode.val>value){
-        temp=ListNode
-        last.next=temp;
-        ListNode=temp.next;
-        temp.next=null;
-        last=temp;
-    }
-    // if no values less than value, stop
-    if(ListNode.val==value){
-        return ListNode;
-    }
-    // move all nodes with greater value to end
-    runner=ListNode;
-    while(runner.next.val!==value){
-        if(runner.next.val>value){
-            last.next=runner.next;
-            runner.next=runner.next.next;
-            last=last.next
-            last.next=null;
-        }else{
-            runner=runner.next
-        }
-    }
+	var last=runner;
+	// move head nodes with greater value to the end
+	while(ListNode.val>value&&ListNode!=last){
+		var temp=ListNode;
+		ListNode=ListNode.next;
+		temp.next=last.next;
+		last.next=temp;
+	}
+	// if all greater values and last, stop
+	if(ListNode==last){
+		return ListNode;
+	}
+	// run through rest of list, moving nodes to front or back as needed
+	var runner=ListNode;
+	while(runner.next&&runner.next!=last){
+		if(runner.next.val<value){
+			var temp=runner.next;
+			runner.next=temp.next;
+			temp.next=ListNode;
+			ListNode=temp;
+		}else if(runner.next.val>value){
+			var temp=runner.next;
+			runner.next=temp.next;
+			temp.next=last.next;
+			last.next=temp;
+		}else{
+			runner=runner.next;
+		}
+	}
+	// move last node if needed
+	if(last.val<value){
+		runner.next=last.next;
+		last.next=ListNode;
+		ListNode=last;
+	}
+	return ListNode;
 }

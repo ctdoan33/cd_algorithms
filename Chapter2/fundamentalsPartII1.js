@@ -14,68 +14,68 @@ function factorial(num){
 }
 function drawLeftStars(num){
     var starart="";
-    for(var i=1; i<=num; i++){
+    for(var i=0; i<num; i++){
         starart+="*";
     }
     console.log(starart);
 }
 function drawRightStars(num){
     var starart="";
-    for(var i=1; i<=75-num; i++){
+    for(var i=0; i<75-num; i++){
         starart+=" ";
     }
-    for(var j=1; j<=num; j++){
+    for(var j=0; j<num; j++){
         starart+="*";
     }
     console.log(starart);
 }
 function drawCenterStars(num){
     var starart="";
-    for(var i=1; i<=(75-num)/2; i++){
+    for(var i=0; i<(75-num)/2; i++){
         starart+=" ";
     }
-    for(var j=1; j<=num; j++){
+    for(var j=0; j<num; j++){
         starart+="*";
     }
-    for(var k=1; i<=(76-num)/2; k++){
+    for(var k=0; i<(76-num)/2; k++){
         starart+=" ";
     }
     console.log(starart);
 }
 function drawLeftChars(num, char){
-    var starart="";
-    for(var i=1; i<=num; i++){
-        starart+=char;
+    var charart="";
+    for(var i=0; i<num; i++){
+        charart+=char;
     }
-    console.log(starart);
+    console.log(charart);
 }
 function drawRightChars(num, char){
-    var starart="";
-    for(var i=1; i<=75-num; i++){
-        starart+=" ";
+    var charart="";
+    for(var i=0; i<75-num; i++){
+        charart+=" ";
     }
-    for(var j=1; j<=num; j++){
-        starart+="char";
+    for(var j=0; j<num; j++){
+        charart+="char";
     }
-    console.log(starart);
+    console.log(charart);
 }
 function drawCenterChars(num, char){
-    var starart="";
-    for(var i=1; i<=(75-num)/2; i++){
-        starart+=" ";
+    var charart="";
+    for(var i=0; i<(75-num)/2; i++){
+        charart+=" ";
     }
-    for(var j=1; j<=num; j++){
-        starart+="char";
+    for(var j=0; j<num; j++){
+        charart+="char";
     }
-    for(var k=1; i<=(76-num)/2; k++){
-        starart+=" ";
+    for(var k=0; i<(76-num)/2; k++){
+        charart+=" ";
     }
-    console.log(starart);
+    console.log(charart);
 }
 function threesFives(){
     var sum=0;
     for(var i=100; i<=4000000; i++){
-        if(i%15!=0&&(i%5==0||i%3)){
+        if(i%15!=0&&(i%5==0||i%3==0)){
             sum+=i;
         }
     }
@@ -127,16 +127,20 @@ function twelveBarBlues(){
     }
 }
 function fibonacci(index){
-    var fib=[0,1];
-    while(fib.length<index){
-        fib[fib.length]=fib[fib.length-1]+fib[fib.length-2];
+	var fib=0;
+	var next=1;
+	var count=0;
+    while(count<index){
+		var temp=fib;
+		fib=next;
+		next=fib+temp;
+		count++;
     }
-    return fib[index];
+    return fib;
 }
 function sumToOne(num){
-    var sum;
     while(num>9){
-        sum=0;
+        var sum=0;
         while(num>0){
             sum+=num%10;
             num=(num-num%10)/10;

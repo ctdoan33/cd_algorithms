@@ -9,6 +9,16 @@ function removeNegatives(arr){
     }
     return arr;
 }
+function removeNegativesNoNestedLoops(arr){
+	for(var i=0, j=0; j<arr.length; j++){
+        if(arr[j]>=0){
+			arr[i]=arr[j];
+			i++;
+        }
+	}
+	arr.length=i;
+    return arr;
+}
 function secondToLast(arr){
     if(arr.length<2){
         return null;
@@ -44,36 +54,23 @@ function nthToLast(arr, n){
     return arr[arr.length-n];
 }
 function nthLargest(arr, n){
-    if(arr.length<n){ //check for array length
+    if(arr.length<n){
         return null;
     }
-    var min=arr[0];
-    var max=arr[0];
-    for(var i=1; i<arr.length; i++){ //find max and min
-        if(arr[i]>max){
-            max=arr[i];
-        }
-        if(arr[i]<min){
-            min=arr[i];
-        }
+    for(var i=0; i<arr.length; i++){
+		var greater=0;
+		var dup=0;
+		for(var j=0; j<arr.length; j++){
+			if(arr[i]<arr[j]){
+				greater++;
+			}else if(arr[i]==arr[j]){
+				dup++;
+			}
+		}
+		if(greater<n&&greater+dup>=n){
+			return arr[i];
+		}
     }
-    for(var j=1; j<n;j++){ //amount of times needed to find max
-        var dup = 0;
-        for(var l=0; l<arr.length; l++){ //correction  for duplicate values
-            if(arr[l]==max){
-                dup++;
-            }
-        }
-        j+=dup-1;
-        var newmax=min;
-        for(var k=0; k<arr.length; k++){ //find next max
-            if(arr[k]>newmax&&arr[k]<max){
-                newmax=arr[k];
-            }
-        }
-        max=newmax;
-    }
-    return max;
 }
 function isCreditCardValid(digitArr){
     var temp=digitArr.pop();

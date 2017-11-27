@@ -19,7 +19,6 @@ function ListNode(value){
         var temp=this.next;
         this.val=temp.val;
         this.next=this.next.next;
-        temp.next=null;
     }
 }
 function copy(ListNode){
@@ -34,11 +33,8 @@ function copy(ListNode){
     return head;
 }
 function filter(headNode, lowVal, highVal){
-    var temp;
     while(headNode.val<lowVal||headNode.val>highVal){
-        temp=headNode;
-        headNode=temp.next;
-        temp.next=null;
+        headNode=headNode.next;
         if(!headNode){
             return null;
         }
@@ -46,9 +42,7 @@ function filter(headNode, lowVal, highVal){
     var runner=headNode;
     while(runner.next){
         if(runner.next.val<lowVal||runner.next.val>highVal){
-            temp=runner.next;
             runner.next=runner.next.next;
-            temp.next=null;
         }else{
             runner=runner.next;
         }
@@ -73,32 +67,28 @@ function secondLargestValue(headNode){
     return max2;
 }
 function zipSLists(slist1, slist2){
-    var runner1=slist1;
-    var runner2=slist2;
-    var temp;
+    var runner=slist1;
     while(runner2){
-        temp=runner1.next;
-        runner1.next=runner2;
-        runner2=temp;
-        runner1=runner1.next;
+        var temp=runner.next;
+        runner.next=slist2;
+        slist2=temp;
+        runner=runner1.next;
     }
     return slist1;
 }
 function dedupeSList(slist){
     var buffer=[slist.val];
     var runner=slist;
-    var temp;
     while(runner.next){
-        temp=null;
+        var unique=true;
         for(var i=0; i<buffer.length; i++){
-            if(runner.next.val==buffer[i]){
-                temp=runner.next;
-                runner.next=temp.next;
-                temp.next=null;
+            if(runner.next.val===buffer[i]){
+				runner.next=runner.runner.next;
+				unique=false;
                 break;
             }
         }
-        if(!temp){
+        if(unique){
             buffer.push(runner.next.val);
             runner=runner.next;
         }
@@ -108,20 +98,16 @@ function dedupeSList(slist){
 // takes much longer with a longer slist
 function dedupeSListWithoutBuffer(slist){
     var runner1=slist;
-    var runner2;
-    var temp;
     while(runner1){
-        runner2=runner1;
+        var runner2=runner1;
         while(runner2.next){
-            if(runner2.next.val==runner1.val){
-                temp=runner2.next;
-                runner2.next=temp.next;
-                temp.next=null;
+            if(runner2.next.val===runner1.val){
+                runner2.next=runner2.next.next;
             }else{
                 runner2=runner2.next;
             }
         }
-        runner1=runner2.next;
+        runner1=runner1.next;
     }
     return slist;
 }
