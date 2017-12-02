@@ -109,42 +109,58 @@ function reverseWordOrder2(str){
 }
 function uniqueWords1(str){
 	var substr="";
-	var newstr="";
 	var hash={};
+	var arr=[];
 	for(var i=0; i<=str.length; i++){
-		if(str[i]==" "||i==str.length){
-			if(!hash[substr]){
+		if(substr&&(str[i]==" "||i==str.length)){
+			if(hash[substr]){
+				hash[substr]++;
+			}else{
 				hash[substr]=1;
-				if(newstr){
-					newstr+=" "+substr;
-				}else{
-					newstr=substr;
-				}
+				arr.push(substr);
 			}
 			substr="";
 		}else{
 			substr+=str[i];
 		}
 	}
+	var newstr="";
+	for(var j=0; j<arr.length; j++){
+		if(hash[arr[j]]==1){
+			if(newstr){
+				newstr+=" "+arr[j];
+			}else{
+				newstr+=arr[j];
+			}
+		}
+	}
 	return newstr;
 }
 function uniqueWords2(str){
 	var substr="";
-	var newstr="";
 	var hash={};
+	var arr=[];
 	for(var i=0; i<=str.length; i++){
 		if(str[i].toLowerCase()>="a"&&str[i].toLowerCase()<="z"){
 			substr+=str[i].toLowerCase();
 		}else if(substr){
-			if(!hash[substr]){
+			if(hash[substr]){
+				hash[substr]++;
+			}else{
 				hash[substr]=1;
-				if(newstr){
-					newstr+=" "+substr;
-				}else{
-					newstr=substr;
-				}
+				arr.push(substr);
 			}
 			substr="";
+		}
+	}
+	var newstr="";
+	for(var j=0; j<arr.length; j++){
+		if(hash[arr[j]]==1){
+			if(newstr){
+				newstr+=" "+arr[j];
+			}else{
+				newstr+=arr[j];
+			}
 		}
 	}
 	return newstr;

@@ -24,31 +24,26 @@ function BTNode2(value){
 }
 function BST2(){
 	this.root=null;
-	this.add=function(val){
+	this.add=function(val, node=this.root){
 		if(!this.root){
 			this.root=new BTNode2(val);
 			return this;
-		}
-		var runner=this.root;
-		while(true){
-			if(val<runner.val){
-				if(runner.left){
-					runner=runner.left;
-				}else{
-					runner.left=new BTNode2(val);
-					runner.left.parent=runner;
-					return this;
-				}
+		}else if(val<node.val){
+			if(node.left){
+				this.add(val, node.left);
 			}else{
-				if(runner.right){
-					runner=runner.right;
-				}else{
-					runner.right=new BTNode2(val);
-					runner.right.parent=runner;
-					return this;
-				}
+				node.left=new BTNode2(val);
+				node.left.parent=node;
+			}
+		}else{
+			if(node.right){
+				this.add(val, node.right);
+			}else{
+				node.right=new BTNode2(val);
+				node.right.parent=node;
 			}
 		}
+		return this;
 	}
 	this.isValid=function(){
 		if(!this.root){
@@ -59,68 +54,52 @@ function BST2(){
 			return this.root.isValid();
 		}
 	}
-	this.remove=function(val){
-		var runner=this.root;
-		while(runner){
-			if(runner.val>val){
-				runner=runner.left;
-			}else if(runner.val<val){
-				runner=runner.right;
-			}else if(runner.parent.left==runner){
-				if(runner.left&&runner.right){
-					if(runner.right.left){
-						var temp=runner.right.left;
-						while(temp.left){
-							temp=temp.left;
-						}
-						temp.parent.left=temp.right;
-						temp.right.parent=temp.parent;
-						runner.val=temp.val;
-					}else{
-						runner.right.left=runner.left;
-						runner.left.parent=runner.right;
-						runner.parent.left=runner.right;
-						runner.right.parent=runner.parent;
-					}
-				}else if(runner.left){
-					runner.parent.left=runner.left;
-					runner.left.parent=runner.parent;
-				}else if(runner.right){
-					runner.parent.left=runner.right;
-					runner.right.parent=runner.parent;
-				}else{
-					runner.parent.left=null;
+	this.remove=function(val, node=this.root){ // uses delete method below
+		if(!node){
+			return false;
+		}else if(node.val>val){
+			if(node.left&&node.left.val===val){
+				node.left=this.delete(node.left);
+				if(node.left){
+					node.left.parent=node;
 				}
-				return this;
-			}else if(runner.parent.right==runner){
-				if(runner.left&&runner.right){
-					if(runner.right.left){
-						var temp=runner.right.left;
-						while(temp.left){
-							temp=temp.left;
-						}
-						temp.parent.left=temp.right;
-						temp.right.parent=temp.parent;
-						runner.val=temp.val;
-					}else{
-						runner.right.left=runner.left;
-						runner.left.parent=runner.right;
-						runner.parent.right=runner.right;
-						runner.right.parent=runner.parent;
-					}
-				}else if(runner.left){
-					runner.parent.right=runner.left;
-					runner.left.parent=runner.parent;
-				}else if(runner.right){
-					runner.parent.right=runner.right;
-					runner.right.parent=runner.parent;
-				}else{
-					runner.parent.right=null;
-				}
-				return this;
+			}else{
+				return this.remove(val, node.left);
 			}
+		}else if(node.val<val){
+			if(node.right&&node.right.val===val){
+				node.right=this.delete(node.right);
+				if(node.right){
+					node.right.parent=node;
+				}
+			}else{
+				return this.remove(val, node.right);
+			}
+		}else{
+			this.root=this.delete(node);
+			this.root.parent=null;
 		}
-		return false;
+		return true;
+	}
+	this.delete=function(node){
+		if(!node.left){
+			return node.right;
+		}else if(!node.right){
+			return node.left;
+		}else if(!node.right.left){
+			node.right.left=node.left;
+			node.right.left.parent=node.right;
+			return node.right;
+		}else{
+			var runner=node.right;
+			while(runner.left.left){
+				runner=runner.left;
+			}
+			node.val=runner.left.val;
+			runner.left=runner.left.right;
+			runner.left.parent=runner.left;
+			return node;
+		}
 	}
 	this.addNoDupes=function(val){
 		if(!this.root){

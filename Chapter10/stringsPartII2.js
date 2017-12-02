@@ -14,52 +14,42 @@ function dedupe(str){
 	return newstr;
 }
 function indexOfFirstUniqueLetter(str){
+	var hash={};
 	var arr=[];
 	for(var i=0; i<str.length; i++){
-		var unique=true;
-		for(var j=0; j<arr.length; j++){
-			if(str[i]==arr[j][0]){
-				unique=false;
-				arr[j][1]+=1;
-				break;
-			}
-		}
-		if(unique){
-			arr.push([str[i],1,i]);
+		if(hash[str[i]]){
+			hash[str[i]]++;
+		}else{
+			hash[str[i]]=1;
+			arr.push(i);
 		}
 	}
 	for(i=0; i<arr.length; i++){
-		if(arr[i][1]==1){
-			return arr[i][2];
+		if(hash[str[arr[i]]]==1){
+			return arr[i];
 		}
 	}
 }
 function uniqueLetters(str){
+	var hash={};
 	var arr=[];
 	for(var i=0; i<str.length; i++){
-		if((str[i]>="A"&&str[i]<="Z")||(str[i]>="a"&&str[i]<="z")){
-			var unique=true;
-			for(var j=0; j<arr.length; j++){
-				if(str[i]==arr[j][0]){
-					unique=false;
-					arr[j][1]+=1;
-					break;
-				}
-			}
-			if(unique){
-				arr.push([str[i],1]);
-			}
+		if(hash[str[i]]){
+			hash[str[i]]++;
+		}else{
+			hash[str[i]]=1;
+			arr.push(str[i]);
 		}
 	}
 	var newstr="";
 	for(i=0; i<arr.length; i++){
-		if(arr[i][1]==1){
-			newstr+=arr[i][0];
+		if(hash[arr[i]]==1){
+			newstr+=arr[i];
 		}
 	}
 	return newstr;
 }
-// Note that numToString and numToText functions have an issue due to JavaScript imprecision
+// Note that numToString and numToText functions have an issue due to float imprecision
 function numToString(num){
 	var arr=[];
 	var e=0;
@@ -223,14 +213,14 @@ function allPermutations(str, substr="", arr=[]){
 	return arr;
 }
 function isPangram(str){
-	var chars={"a":0,"b":0,"c":0,"d":0,"e":0,"f":0,"g":0,"h":0,"i":0,"j":0,"k":0,"l":0,"m":0,"n":0,"o":0,"p":0,"q":0,"r":0,"s":0,"t":0,"u":0,"v":0,"w":0,"x":0,"y":0,"z":0};
+	var chars={"a":1,"b":1,"c":1,"d":1,"e":1,"f":1,"g":1,"h":1,"i":1,"j":1,"k":1,"l":1,"m":1,"n":1,"o":1,"p":1,"q":1,"r":1,"s":1,"t":1,"u":1,"v":1,"w":1,"x":1,"y":1,"z":1};
 	for(var i=0; i<str.length; i++){
-		if(chars[str[i].toLowerCase()]===0){
-			chars[str[i].toLowerCase()]++;
+		if(chars[str[i].toLowerCase()]){
+			chars[str[i].toLowerCase()]=0;
 		}
 	}
-	for(i in chars){
-		if(!chars[i]){
+	for(var x in chars){
+		if(chars[x]){
 			return false;
 		}
 	}

@@ -5,62 +5,50 @@ function BTNode(value){
 }
 function BST(){
 	this.root=null;
-	this.add=function(val){
-		if(!this.root){
+	this.add=function(val, node=this.root){
+		if(!node){
 			this.root=new BTNode(val);
-			return this;
-		}
-		var runner=this.root;
-		while(true){
-			if(val<runner.val){
-				if(runner.left){
-					runner=runner.left;
-				}else{
-					runner.left=new BTNode(val);
-					return this;
-				}
+		}else if(val<node.val){
+			if(node.left){
+				this.add(val, node.left);
 			}else{
-				if(runner.right){
-					runner=runner.right;
-				}else{
-					runner.right=new BTNode(val);
-					return this;
-				}
+				node.left=new BTNode(val);
+			}
+		}else{
+			if(node.right){
+				this.add(val, node.right);
+			}else{
+				node.right=new BTNode(val);
 			}
 		}
+		return this;
 	}
-	this.contains=function(val){
-		var runner=this.root;
-		while(runner){
-			if(val===runner.val){
-				return true;
-			}else if(val<runner.val){
-				runner=runner.left;
-			}else{
-				runner=runner.right;
-			}
+	this.contains=function(val, node=this.root){
+		if(!node){
+			return false;
+		}else if(val===node.val){
+			return true;
+		}else if(val<node.val){
+			return this.contains(val, node.left);
+		}else{
+			return this.contains(val, node.right);
 		}
-		return false;
 	}
-	this.min=function(){
-		if(!this.root){
+	this.min=function(node=this.root){
+		if(!node){
 			return null;
+		}else if(!node.left){
+			return node.val;
 		}
-		var runner=this.root;
-		while(runner.left){
-			runner=runner.left;
-		}
-		return runner.val;
+		return this.min(node.left);
 	}
-	this.max=function(){
-		if(!this.root){
+	this.max=function(node=this.root){
+		if(!node){
 			return null;
+		}else if(!node.right){
+			return node.val;
 		}
-		var runner=this.root;
-		while(runner.right){
-			runner=runner.right;
-		}
-		return runner.val;
+		return this.min(node.right);
 	}
 	this.size=function(node=this.root){
 		if(!node){
@@ -109,51 +97,48 @@ function arrayToBST(leftarr, rightarr, tree=new BST()){
 		arrayToBST(rightarr.slice(0,idx), rightarr.slice(idx+1, rightarr.length), tree);
 	}
 }
-function closestCommonAncestor(tree, val1, val2){
+function closestCommonAncestor(tree, val1, val2, node=tree.root){
 	if(val1>val2){
 		var temp=val1;
 		val1=val2;
 		val2=temp;
 	}
-	var runner=tree.root;
-	while(true){
-		if(runner.val>val2){
-			runner=runner.left;
-		}else if(runner.val<val1){
-			runner=runner.next;
-		}else{
-			return runner.val;
-		}
+	if(runner.val>val2){
+		return closestCommonAncestor(tree, val1, val2, node.left);
+	}else if(runner.val<val1){
+		return closestCommonAncestor(tree, val1, val2, node.right);
+	}else{
+		return runner.val;
 	}
 }
-function bstPreOrder(BST, node=BST.root){
+function bstPreOrder(tree, node=tree.root){
 	if(!node){
 		return;
 	}
 	console.log(node.val);
-	bstPreOrder(BST, node.left);
-	bstPreOrder(BST, node.right);
+	bstPreOrder(tree, node.left);
+	bstPreOrder(tree, node.right);
 }
-function bstPostOrder(BST, node=BST.root){
+function bstPostOrder(tree, node=tree.root){
 	if(!node){
 		return;
 	}
-	bstPostOrder(BST, node.left);
-	bstPostOrder(BST, node.right);
+	bstPostOrder(tree, node.left);
+	bstPostOrder(tree, node.right);
 	console.log(node.val);
 }
-function bst2Arr(BST, order="in", arr=[], node=BST.root){
+function bst2Arr(tree, order="in", arr=[], node=tree.root){
 	if(!node){
 		return;
 	}
 	if(order=="pre"){
 		arr.push(node.val);
 	}
-	bst2Arr(BST, order, arr, node.left);
+	bst2Arr(tree, order, arr, node.left);
 	if(order=="in"){
 		arr.push(node.val);
 	}
-	bst2Arr(BST, order, arr, node.right);
+	bst2Arr(tree, order, arr, node.right);
 	if(order=="post"){
 		arr.push(node.val);
 	}
@@ -177,28 +162,28 @@ function SList(){
 		}
 	}
 }
-function bst2List(BST, order="in", list=new SList(), node=BST.root){
+function bst2List(tree, order="in", list=new SList(), node=tree.root){
 	if(!node){
 		return;
 	}
 	if(order=="pre"){
 		list.pushBack(node.val);
 	}
-	bst2List(BST, order, list, node.left);
+	bst2List(tree, order, list, node.left);
 	if(order=="in"){
 		list.pushBack(node.val);
 	}
-	bst2List(BST, order, list, node.right);
+	bst2List(tree, order, list, node.right);
 	if(order=="post"){
 		list.pushBack(node.val);
 	}
 	return list;
 }
-function bstPreOrderNoRecursion(BST){
-	if(!BST.root){
+function bstPreOrderNoRecursion(tree){
+	if(!tree.root){
 		return;
 	}
-	var nodes=[BST.root];
+	var nodes=[tree.root];
 	while(nodes.length>0){
 		var node=nodes.pop();
 		console.log(node.val);

@@ -205,33 +205,33 @@ function MedianHeap(){
 	}
 }
 function QueueFromTwoStacks(){
-    var stack1=new Stack();
-    var stack2=new Stack();
-    this.enqueue=function(val){
-        stack1.push(val);
-    }
-    this.dequeue=function(){
-        if(stack2.isEmpty()){
-            while(!stack1.isEmpty()){
-                stack2.push(stack1.pop());
-            }
-        }
-        return stack2.pop();
-    }
+	var stack1=new Stack();
+	var stack2=new Stack();
+	this.enqueue=function(val){
+		stack1.push(val);
+	}
+	this.dequeue=function(){
+		if(stack2.isEmpty()){
+			while(!stack1.isEmpty()){
+				stack2.push(stack1.pop());
+			}
+		}
+		return stack2.pop();
+	}
 }
 function PriorityQueueFromTwoStacks(){
-    var stack1=new Stack();
-    var stack2=new Stack();
-    this.enqueue=function(val, pri){
-        while(stack1.top()[1]<pri){
+	var stack1=new Stack();
+	var stack2=new Stack();
+	this.enqueue=function(val, pri){
+		while(stack1.top()[1]<pri){
 			stack2.push(stack1.pop());
 		}
 		stack1.push([val, pri]);
 		while(!stack2.isEmpty()){
 			stack1.push(stack2.pop());
 		}
-    }
-    this.dequeue=function(){
+	}
+	this.dequeue=function(){
 		while(!stack1.isEmpty()){
 			stack2.push(stack1.pop());
 		}
@@ -240,7 +240,7 @@ function PriorityQueueFromTwoStacks(){
 			stack1.push(stack2.pop());
 		}
 		return temp;
-    }
+	}
 }
 // Possible error as ArrStack already built
 ArrayNoDupe.prototype.push=function(val){

@@ -5,23 +5,21 @@ function BTNode(value){
 	this.val=value;
 	this.left=null;
 	this.right=null;
-	this.nodeBefore=function(node, runner=this, before){
-		if(!runner){
-			return before;
-		}else if(runner.val>=node.val){
-			return this.nodeBefore(node, runner.left, before);
-		}else if(runner.val<node.val){
-			return this.nodeBefore(node, runner.right, node);
+	this.nodeBefore=function(node, before){
+		if(this.left&&this.val>=node.val){
+			return this.left.nodeBefore(node, before);
+		}else if(this.right&&this.val<node.val){
+			return this.right.nodeBefore(node, this);
 		}
+		return before;
 	}
-	this.nodeAfter=function(node, runner=this, after){
-		if(!runner){
-			return after;
-		}else if(runner.val>node.val){
-			return this.nodeAfter(node, runner.left, node);
-		}else if(runner.val<=node.val){
-			return this.nodeAfter(node, runner.right, after);
+	this.nodeAfter=function(node, after){
+		if(this.left&&this.val>node.val){
+			return this.left.nodeAfter(node, this);
+		}else if(this.right&&this.val<=node.val){
+			return this.right.nodeAfter(node, after);
 		}
+		return after;
 	}
 }
 function BST(){
@@ -29,83 +27,45 @@ function BST(){
 		return new BST();
 	}
 	this.root=null;
-	// implementations of remove typically use helpers and recursion making it shorter and cleaner, but book requires return false
-	this.remove=function(val){
-		var runner=this.root;
-		if(runner.val===val){
-			if(runner.left&&runner.right){
-				if(runner.right.left){
-					runner=runner.right;
-					while(runner.left.left){
-						runner=runner.left;
-					}
-					this.root.val=runner.left.val;
-					runner.left=runner.left.right;
-				}else{
-					runner.right.left=runner.left;
-					this.root=runner.right;
-				}
-			}else if(runner.left){
-				this.root=runner.left;
-			}else if(runner.right){
-				this.root=runner.right;
+	// book requires return false when not found, so must track from parent
+	// this removes whike keeping in-order
+	this.remove=function(val, node=this.root){ // uses delete method below
+		if(!node){ // this IF block finds the node, base if not found
+			return false;
+		}else if(node.val>val){
+			if(node.left&&node.left.val===val){
+				node.left=this.delete(node.left); // node found, left pointer reassigned
 			}else{
-				this.root=null;
+				return this.remove(val, node.left); // continue finding
 			}
-			return this;
+		}else if(node.val<val){
+			if(node.right&&node.right.val===val){
+				node.right=this.delete(node.right); // node found, right pointer reassigned
+			}else{
+				return this.remove(val, node.right); // continue finding
+			}
+		}else if(node.val===val){ // case in which root node is to be deleted
+			this.root=this.delete(node);
 		}
-		while(runner){
-			if(runner.left&&runner.left.val===val){
-				var temp=runner.left;
-				if(temp.left&&temp.right){
-					if(temp.right.left){
-						temp=temp.right;
-						while(temp.left){
-							temp=temp.left;
-						}
-						runner.left.val=temp.left.val;
-						temp.left=temp.left.right;
-					}else{
-						runner.left=temp.right;
-					}
-				}else if(temp.left){
-					runner.left=temp.left;
-				}else if(temp.right){
-					runner.left=temp.right;
-				}else{
-					runner.left=null;
-				}
-				return this;
-			}else if(runner.right&&runner.right.val===val){
-				var temp=runner.right;
-				if(temp.left&&temp.right){
-					if(temp.right.left){
-						temp=temp.right;
-						while(temp.left){
-							temp=temp.left;
-						}
-						runner.right.val=temp.left.val;
-						temp.left=temp.left.right;
-					}else{
-						runner.left=temp.right;
-					}
-				}else if(temp.left){
-					runner.right=temp.left;
-				}else if(temp.right){
-					runner.right=temp.right;
-				}else{
-					runner.right=null;
-				}
-				return this;
-			}else if(runner.val>val){
-				prev=runner;
+		return true;
+	}
+	this.delete=function(node){
+		if(!node.left){
+			return node.right;
+		}else if(!node.right){
+			return node.left;
+		}else if(!node.right.left){
+			node.right.left=node.left;
+			return node.right;
+		}else{
+			var runner=node.right;
+			while(runner.left.left){
 				runner=runner.left;
-			}else{
-				prev=runner;
-				runner=runner.right;
 			}
+			node.val=runner.left.val;
+			runner.left=runner.left.right;
+			return node;
 		}
-		return false;
 	}
 	this.removeAll=function(){
 		this.root=null;
@@ -119,31 +79,25 @@ function BST(){
 			return this.isValid(node.left, left, node.val)&&this.valid(node.right, node.val, right);
 		}
 	}
-	this.addNoDupes=function(val){
-		if(!this.root){
+	this.addNoDupes=function(val, node=this.root){
+		if(!node){
 			this.root=new BTNode(val);
-			return true;
-		}
-		var runner=this.root;
-		while(true){
-			if(runner.val===val){
-				return false;
-			}else if(val<runner.val){
-				if(runner.left){
-					runner=runner.left;
-				}else{
-					runner.left=new BTNode(val);
-					return true;
-				}
+		}else if(val<node.val){
+			if(node.left){
+				this.add(val, node.left);
 			}else{
-				if(runner.right){
-					runner=runner.right;
-				}else{
-					runner.right=new BTNode(val);
-					return true;
-				}
+				node.left=new BTNode(val);
 			}
+		}else if(val>node.val){
+			if(node.right){
+				this.add(val, node.right);
+			}else{
+				node.right=new BTNode(val);
+			}
+		}else{
+			return false;
 		}
+		return true;
 	}
 	this.valBefore=function(val, node=this.root, before){
 		if(!node){
@@ -168,8 +122,9 @@ function BST(){
 			return closest;
 		}else if(node.val===val){
 			return val;
-		}
-		if(Math.abs(node.val-val)<Math.abs(closest-val)){
+		}else if(node==this.root){
+			closest=this.root.val;
+		}else if(Math.abs(node.val-val)<Math.abs(closest-val)){
 			closest=node.val;
 		}
 		if(node.val>val){
@@ -179,13 +134,13 @@ function BST(){
 		}
 	}
 }
-function bstReverseOrder(BST, node=BST.root){
+function bstReverseOrder(tree, node=tree.root){
 	if(!node){
 		return;
 	}
-	bstReverseOrder(BST, node.right);
+	bstReverseOrder(tree, node.right);
 	console.log(node.val);
-	bstReverseOrder(BST, node.left);
+	bstReverseOrder(tree, node.left);
 }
 function treePathContainsSum(tree, sum, node=tree.root, memo=0){
 	if(!node||sum<memo+node.val){

@@ -1,20 +1,20 @@
 function rSigma(num){
-    num = num-num%1;
-    if(num == 1){
-        return 1;
-    }
-    if(num > 1){
-        return rSigma(num-1)+num;
-    }else{
-        return rSigma(num+1)+num;
-    }
+	num = num-num%1;
+	if(num == 1){
+		return 1;
+	}
+	if(num > 1){
+		return rSigma(num-1)+num;
+	}else{
+		return rSigma(num+1)+num;
+	}
 }
 function rFact(num){
-    num = num-num%1;
-    if(num <= 0){
-        return 1;
-    }
-    return rFact(num-1)*num;
+	num = num-num%1;
+	if(num <= 0){
+		return 1;
+	}
+	return rFact(num-1)*num;
 }
 function floodFill(canvas2D, startXY, newColor){
 	var oldColor = canvas2D[startXY[1]][startXY[0]];
