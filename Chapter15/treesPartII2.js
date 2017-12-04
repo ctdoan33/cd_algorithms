@@ -148,17 +148,23 @@ function valuesForLayer(BST, layer, queue){
 		}
 		return result;
 	}
-	var newqueue=new Queue();
-	while(queue.front()){
+	var first;
+	while(queue.front()!=first){
 		var node=queue.dequeue();
 		if(node.left){
-			newqueue.enqueue(node.left);
+			if(!first){
+				first=node.left;
+			}
+			queue.enqueue(node.left);
 		}
 		if(node.right){
-			newqueue.enqueue(node.right);
+			if(!first){
+				first=node.right;
+			}
+			queue.enqueue(node.right);
 		}
 	}
-	return valuesForLayer(BST, layer-1, newqueue);
+	return valuesForLayer(BST, layer-1, queue);
 }
 // in a full tree, there are 2^n nodes at each layer n (with n=0 as root)
 // the percentage of nodes that are leaves approaches 50% as there are more levels
@@ -175,21 +181,27 @@ function layerArrays(BST, queue, arr=[]){
 		arr.push(subarr);
 		layerArrays(BST, queue, arr);
 	}else{
-		var newqueue=new Queue();
-		while(queue.front()){
+		var first;
+		while(queue.front()!=first){
 			var node=queue.dequeue();
 			if(node.left){
-				newqueue.enqueue(node.left);
+				if(!first){
+					first=node.left;
+				}
+				queue.enqueue(node.left);
 				subarr.push(node.left.val);
 			}
 			if(node.right){
-				newqueue.enqueue(node.right);
+				if(!first){
+					first=node.right;
+				}
+				queue.enqueue(node.right);
 				subarr.push(node.right.val);
 			}
 		}
 		if(subarr.length){
 			arr.push(subarr);
-			layerArrays(BST, newqueue, arr);
+			layerArrays(BST, queue, arr);
 		}
 	}
 	return arr;

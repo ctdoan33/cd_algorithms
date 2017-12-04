@@ -101,14 +101,14 @@ function rGCF1(a, b){
 	}
 }
 function rGCF2(a, b){
-	if(a==b){
-		return a;
-	}
 	while(a>b){
 		a-=b;
 	}
 	while(b>a){
 		b-=a;
+	}
+	if(a==b){
+		return a;
 	}
 	return rGCF2(a, b);
 }

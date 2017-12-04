@@ -64,13 +64,16 @@ function rGCF1(a, b){
 	}
 }
 function rGCF2(a, b){
+	while(a > b){
+		a -= b;
+	}
+	while(b > a){
+		b -= a;
+	}
 	if(a == b){
 		return a;
-	}else if(a > b){
-		return rGCF2(a%b, b);
-	}else if(b > a){
-		return rGCF2(a, b%a);
 	}
+	return rGCF2(a, b);
 }
 function strSubsets(str, substr="", idx=0, arr=[]){
 	if(idx == str.length){
