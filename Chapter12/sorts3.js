@@ -1,6 +1,7 @@
 // Smarter Sorting Solution:
-// A quicksort would be best, as with IQs you know the best pivot point is 100 (or close to it)
-// having the sorting running asynchronously could further speed up the sort
+// A quicksort would be best, as with IQs you know the best pivot is 100 (or close to it)
+// subsequent pivots can be selected based on 50% breakpoints on a normal curve centered on 100
+// having the sorting running in parallel could further speed up the sort
 function quickSort3(arr, start=0, end=arr.length){
 	if(end-start<=1){
 		return;
@@ -51,7 +52,7 @@ function quickSort3(arr, start=0, end=arr.length){
 // ignoring list sizes and given an array of invoices (also arrays):
 function masterInvoiceList(arr){
 	if(arr.length==1){
-		return arr;
+		return arr[0];
 	}
 	var master=[];
 	for(var i=0; i<arr.length; i+=2){
@@ -107,7 +108,7 @@ function countingSort(arr, power=0){
 		count[j+1]+=count[j];
 	}
 	var newarr=[];
-	for(i=arr.length; i>=0; i--){
+	for(i=arr.length-1; i>=0; i--){
 		var digit=Math.floor(arr[i]%Math.pow(10,power+1)/Math.pow(10,power));
 		count[digit]--;
 		newarr[count[digit]]=arr[i];

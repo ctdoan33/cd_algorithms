@@ -17,26 +17,26 @@ function rFact(num){
 	return rFact(num-1)*num;
 }
 function floodFill(canvas2D, startXY, newColor){
-	var oldColor=canvas2D[startXY[1]][startXY[0]];
-	canvas2D[startXY[1]][startXY[0]]=newColor;
-	if(canvas2D[startXY[1]-1][startXY[0]]===oldColor){
-		floodFill(canvas2D, [startXY[0], startXY[1]-1], newColor)
+	var x=startXY[0];
+	var y=startXY[1];
+	var oldColor=canvas2D[y][x];
+	canvas2D[y][x]=newColor;
+	if(canvas2D[y-1][x]===oldColor){
+		floodFill(canvas2D, [x, y-1], newColor)
 	}
-	if(canvas2D[startXY[1]][startXY[0]+1]===oldColor){
-		floodFill(canvas2D, [startXY[0]+1, startXY[1]], newColor)
+	if(canvas2D[y][x+1]===oldColor){
+		floodFill(canvas2D, [x+1, y], newColor)
 	}
-	if(canvas2D[startXY[1]+1][startXY[0]]===oldColor){
-		floodFill(canvas2D, [startXY[0], startXY[1]+1], newColor)
+	if(canvas2D[y+1][x]===oldColor){
+		floodFill(canvas2D, [x, y+1], newColor)
 	}
-	if(canvas2D[startXY[1]][startXY[0]-1]===oldColor){
-		floodFill(canvas2D, [startXY[0]-1, startXY[1]], newColor)
+	if(canvas2D[y][x-1]===oldColor){
+		floodFill(canvas2D, [x-1, y], newColor)
 	}
 }
 function rFib(num){
 	num=num-num%1;
-	if(num<=0){
-		return 1;
-	}else if(num===1){
+	if(num<=1){
 		return 1;
 	}
 	return rFib(num-2)+rFib(num-1);
